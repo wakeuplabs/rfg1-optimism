@@ -3,6 +3,7 @@
   "scripts": {
     "dev": "nodemon src/server.ts",
     "start": "node build/server.js",
+    "swagger": "node swagger.ts",
     "postinstall": "tsc",
     "build": "rm -rf build/ && prettier --write src/ && tsc"
   },
@@ -12,6 +13,7 @@
     "@types/express-fileupload": "^1.2.2",
     "@types/morgan": "^1.9.3",
     "@types/node": "^18.0.0",
+    "@types/swagger-ui-express": "^4.1.3",
     "@types/validator": "^13.7.3",
     "axios": "^0.27.2",
     "cors": "^2.8.5",
@@ -25,6 +27,8 @@
     "nodemon": "^2.0.16",
     "prettier": "^2.7.1",
     "reflect-metadata": "^0.1.13",
+    "swagger-autogen": "^2.23.5",
+    "swagger-ui-express": "^5.0.0",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.4",
     "yup": "^0.32.11"

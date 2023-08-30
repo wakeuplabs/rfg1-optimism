@@ -4,7 +4,7 @@ import morgan from "morgan";
 import routes from "./routes";
 import middlewares from "./middlewares";
 import cors from "cors";
-import 'dotenv/config'
+import "dotenv/config";
 
 const router: Express = express();
 
