@@ -3,7 +3,7 @@ import { provider, dater } from "../provider";
 import { BalanceResponse } from "../models/wallet";
 import { Block } from "ethers";
 
-const returnBalance = (res: Response, address: string, balance: BigInt) => {
+const returnBalance = (res: Response, address: string, balance: bigint) => {
   const balanceResponse: BalanceResponse = {
     address: address,
     balance: balance.toString(),
@@ -19,7 +19,7 @@ const getCurrentBalance = async (
   try {
     const address = req.params.address;
 
-    const balance: BigInt = await provider.getBalance(address);
+    const balance: bigint = await provider.getBalance(address);
     returnBalance(res, address, balance);
   } catch (error) {
     next(error);
@@ -36,7 +36,7 @@ const getBalanceAtBlock = async (
     const address = req.params.address;
     const blockNumber = parseInt(req.params.blockNumber);
 
-    const balance: BigInt = await provider.getBalance(address, blockNumber);
+    const balance: bigint = await provider.getBalance(address, blockNumber);
     returnBalance(res, address, balance);
   } catch (error) {
     next(error);
@@ -54,8 +54,7 @@ const getBalanceAtDate = async (
     const date = Date.parse(req.params.date);
 
     const block: Block = await dater.getDate(date, true, false);
-    console.log(block);
-    const balance: BigInt = await provider.getBalance(address, block.number);
+    const balance: bigint = await provider.getBalance(address, block.number);
     returnBalance(res, address, balance);
   } catch (error) {
     next(error);

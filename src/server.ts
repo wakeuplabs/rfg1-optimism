@@ -6,29 +6,31 @@ import middlewares from "./middlewares";
 import cors from "cors";
 import "dotenv/config";
 
-const router: Express = express();
+const app: Express = express();
 
-router.use(cors());
+app.use(cors());
 
 /** Logging */
-router.use(morgan("dev"));
+app.use(morgan("dev"));
 /** Parse the request */
-router.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }));
 /** Takes care of JSON data */
-router.use(express.json());
+app.use(express.json());
 /** Takes care of file upload */
 
 /** Routes */
-router.use("/", routes);
+app.use("/", routes);
 
 /** Error handling */
-router.use(middlewares.notFound);
-router.use(middlewares.errorHandler);
+app.use(middlewares.notFound);
+app.use(middlewares.errorHandler);
 
 /** Server */
-const httpServer = http.createServer(router);
+const httpServer = http.createServer(app);
 const PORT: any = process.env.PORT ?? 6060;
 
 httpServer.listen(PORT, () =>
   console.log(`The server is running on port ${PORT}`)
 );
+
+module.exports = httpServer;
