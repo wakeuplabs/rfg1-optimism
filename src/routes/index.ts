@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import express from "express";
 import infoController from "../controllers/info";
 import walletController from "../controllers/wallet";
