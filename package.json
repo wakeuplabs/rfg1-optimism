@@ -2,9 +2,12 @@
   "main": "src/server.ts",
   "scripts": {
     "dev": "nodemon src/server.ts",
-    "start": "node build/server.js",
+    "start": "node build/src/server.js",
+    "test": "jest",
+    "swagger": "node swagger.ts",
     "postinstall": "tsc",
-    "build": "rm -rf build/ && prettier --write src/ && tsc"
+    "build": "rm -rf build/ && prettier --write src/ && tsc && node build/swagger.js",
+    "all": "npm run build && npm run test"
   },
   "dependencies": {
     "@types/axios": "^0.14.0",
@@ -12,10 +15,13 @@
     "@types/express-fileupload": "^1.2.2",
     "@types/morgan": "^1.9.3",
     "@types/node": "^18.0.0",
+    "@types/swagger-ui-express": "^4.1.3",
     "@types/validator": "^13.7.3",
     "axios": "^0.27.2",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.1",
+    "dotenv": "^16.3.1",
+    "ethereum-block-by-date": "^1.4.9",
+    "ethers": "^6.7.1",
     "express": "^4.18.1",
     "mongodb": "^4.10.0",
     "mongodb-typescript": "^3.0.0",
@@ -23,12 +29,18 @@
     "nodemon": "^2.0.16",
     "prettier": "^2.7.1",
     "reflect-metadata": "^0.1.13",
-    "ts-node": "^10.8.1",
+    "swagger-autogen": "^2.23.5",
+    "swagger-ui-express": "^5.0.0",
     "typescript": "^4.7.4",
     "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
-    "eslint-config-codely": "^2.1.3"
+    "@types/jest": "^29.5.4",
+    "eslint-config-codely": "^2.1.3",
+    "jest": "^29.6.4",
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1"
   }
 }

@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import "dotenv/config";
 
 function notFound(req: Request, res: Response, next: NextFunction) {
   res.status(404);
