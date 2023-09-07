@@ -1,14 +1,14 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.0",
   "info": {
     "title": "RFG1-OPTIMISM",
     "description": "RFG1 OPTIMISM",
     "version": "1.0.0"
   },
-  "host": "localhost:8080",
-  "basePath": "/",
-  "schemes": [
-    "http"
+  "servers": [
+    {
+      "url": "http://localhost:8080/"
+    }
   ],
   "paths": {
     "/api-docs": {
@@ -23,7 +23,7 @@
     },
     "/info": {
       "get": {
-        "description": "",
+        "description": "Healthcheck endpoint",
         "responses": {
           "200": {
             "description": "OK"
@@ -33,66 +33,136 @@
     },
     "/{address}/balance": {
       "get": {
-        "description": "",
+        "description": "Gets current balance of wallet",
         "parameters": [
           {
             "name": "address",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            },
+            "description": "Address to search"
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceResponse"
+                }
+              }
+            }
           }
         }
       }
     },
     "/{address}/balance/block/{blockNumber}": {
       "get": {
-        "description": "",
+        "description": "Gets balance of wallet at specific block",
         "parameters": [
           {
             "name": "address",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            },
+            "description": "Address to search"
           },
           {
             "name": "blockNumber",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            },
+            "description": "Block to search"
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceResponse"
+                }
+              }
+            }
           }
         }
       }
     },
     "/{address}/balance/date/{date}": {
       "get": {
-        "description": "",
+        "description": "Gets balance of wallet near date",
         "parameters": [
           {
             "name": "address",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            },
+            "description": "Address to search"
           },
           {
             "name": "date",
             "in": "path",
             "required": true,
-            "type": "string"
+            "schema": {
+              "type": "string"
+            },
+            "description": "Date to search (YYYY-MM-DDThh:mm:ss)"
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/BalanceResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BalanceResponse": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "Address that was queried",
+            "example": "0xA1673f6ec41cE19814B412bC633D59e4119eCD17"
+          },
+          "balance": {
+            "type": "string",
+            "description": "Balance that was queried",
+            "example": "8901123"
           }
         }
       }

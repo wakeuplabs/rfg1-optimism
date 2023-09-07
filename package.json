@@ -1,12 +1,11 @@
 {
   "main": "src/server.ts",
   "scripts": {
-    "dev": "nodemon src/server.ts",
-    "start": "node build/src/server.js",
+    "dev": "nodemon swagger.ts --ignore 'swagger.json'",
+    "start": "node build/swagger.js",
     "test": "jest",
-    "swagger": "node swagger.ts",
     "postinstall": "tsc",
-    "build": "rm -rf build/ && prettier --write src/ && tsc && node build/swagger.js",
+    "build": "rm -rf build/ && prettier --write src/ && tsc",
     "all": "npm run build && npm run test"
   },
   "dependencies": {
@@ -32,9 +31,7 @@
     "swagger-autogen": "^2.23.5",
     "swagger-ui-express": "^5.0.0",
     "typescript": "^4.7.4",
-    "yup": "^0.32.11"
-  },
-  "devDependencies": {
+    "yup": "^0.32.11",
     "@types/cors": "^2.8.12",
     "@types/jest": "^29.5.4",
     "eslint-config-codely": "^2.1.3",

@@ -16,6 +16,18 @@ const getCurrentBalance = async (
   res: Response,
   next: NextFunction
 ) => {
+  /* 
+  #swagger.description = 'Gets current balance of wallet'
+  #swagger.parameters['address'] = {
+    in: 'path',
+    description: 'Address to search',
+    required: true,
+    type: 'string'
+  }
+  #swagger.responses[200] = { 
+    "schema": { $ref: '#/definitions/BalanceResponse' }
+  }
+  */
   try {
     const address = req.params.address;
 
@@ -32,6 +44,24 @@ const getBalanceAtBlock = async (
   res: Response,
   next: NextFunction
 ) => {
+  /* 
+  #swagger.description = 'Gets balance of wallet at specific block'
+  #swagger.parameters['address'] = { 
+    in: 'path',
+    description: 'Address to search',
+    required: true,
+    type: 'string'
+  },
+  #swagger.parameters['blockNumber'] = { 
+    in: 'path',
+    description: 'Block to search',
+    required: true,
+    type: 'number'
+  }
+  #swagger.responses[200] = { 
+    "schema": { $ref: '#/definitions/BalanceResponse' }
+  }
+  */
   try {
     const address = req.params.address;
     const blockNumber = parseInt(req.params.blockNumber);
@@ -49,6 +79,24 @@ const getBalanceAtDate = async (
   res: Response,
   next: NextFunction
 ) => {
+  /*
+  #swagger.description = 'Gets balance of wallet near date'
+  #swagger.parameters['address'] = { 
+    in: 'path',
+    description: 'Address to search',
+    required: true,
+    type: 'string'
+  }
+  #swagger.parameters['date'] = { 
+    in: 'path',
+    description: 'Date to search (YYYY-MM-DDThh:mm:ss)',
+    required: true,
+    type: 'string'
+  }
+  #swagger.responses[200] = { 
+    "schema": { $ref: '#/definitions/BalanceResponse' }
+  }
+  */
   try {
     const address = req.params.address;
     const date = Date.parse(req.params.date);
