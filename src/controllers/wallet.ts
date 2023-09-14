@@ -101,8 +101,8 @@ const getBalanceAtDate = async (
     const address = req.params.address;
     const date = Date.parse(req.params.date);
 
-    const block: Block = await dater.getDate(date, true, false);
-    const balance: bigint = await provider.getBalance(address, block.number);
+    const block = await dater.getDate(date, true, false);
+    const balance: bigint = await provider.getBalance(address, block.block);
     returnBalance(res, address, balance);
   } catch (error) {
     next(error);

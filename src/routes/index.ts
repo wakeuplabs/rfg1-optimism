@@ -26,6 +26,6 @@ router.get(
 router.get("/:address/balance/date/:date", walletController.getBalanceAtDate);
 
 // === Smart Contract ===
-router.put("/:address/run", contractController.queryContract);
+router.put("/:address/query", contractController.queryContract);
 
 export = router;

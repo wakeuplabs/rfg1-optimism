@@ -180,6 +180,12 @@
                   },
                   "params": {
                     "example": "any"
+                  },
+                  "blockTag": {
+                    "example": "any"
+                  },
+                  "blockDate": {
+                    "example": "any"
                   }
                 }
               }
