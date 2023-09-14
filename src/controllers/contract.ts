@@ -19,9 +19,9 @@ const queryContract = async (
 
     // Check if all fields are present
     if (unprocessedAbi === undefined || unprocessedAbi.length === 0)
-      return returnError(res, "No abi");
+      return returnError(res, "abi must be specified");
     if (functionName === undefined || functionName === "")
-      return returnError(res, "No function");
+      return returnError(res, "function must be specified");
     if (blockDate !== undefined && !Date.parse(blockDate))
       return returnError(res, "Date is not valid");
 
