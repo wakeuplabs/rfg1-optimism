@@ -8,7 +8,22 @@ const queryContract = async (
   res: Response,
   next: NextFunction
 ) => {
-  // todo add swagger comments
+  /*
+  #swagger.description = 'Queries `view function` of specified contract'
+  #swagger.parameters['address'] = { 
+    in: 'path',
+    description: 'Address of the contract',
+    required: true,
+    type: 'string'
+  }
+  #swagger.requestBody = { 
+    required: true,
+    schema: { $ref: '#/definitions/QueryContractRequest'}
+  }
+  #swagger.responses[200] = { 
+    "schema": { $ref: '#/definitions/QueryContractResponse' }
+  }
+  */
   try {
     const address = req.params.address;
     const unprocessedAbi = req.body.abi;

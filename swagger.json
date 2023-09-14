@@ -148,9 +148,9 @@
         }
       }
     },
-    "/{address}/run": {
+    "/{address}/query": {
       "put": {
-        "description": "",
+        "description": "Queries `view function` of specified contract",
         "parameters": [
           {
             "name": "address",
@@ -158,36 +158,38 @@
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "Address of the contract"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueryContractResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueryContractResponse"
+                }
+              }
+            }
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "abi": {
-                    "example": "any"
-                  },
-                  "function": {
-                    "example": "any"
-                  },
-                  "params": {
-                    "example": "any"
-                  },
-                  "blockTag": {
-                    "example": "any"
-                  },
-                  "blockDate": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/QueryContractRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/QueryContractRequest"
               }
             }
           }
@@ -209,6 +211,89 @@
             "type": "string",
             "description": "Balance that was queried",
             "example": "8901123"
+          }
+        }
+      },
+      "QueryContractRequest": {
+        "type": "object",
+        "properties": {
+          "function": {
+            "type": "string",
+            "description": "Name of the function to call",
+            "example": "balanceOf"
+          },
+          "abi": {
+            "description": "Accepts a human readable ABI or a JSON ABI",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/HumanReadableAbi"
+              },
+              {
+                "$ref": "#/components/schemas/JSONAbi"
+              }
+            ]
+          },
+          "params": {
+            "type": "object",
+            "description": "Neccesary parameters for the function",
+            "example": {
+              "balanceOf": "0x0"
+            }
+          },
+          "blockTag": {
+            "type": "number",
+            "description": "BlockTag number for when to query the function",
+            "example": 4312
+          },
+          "blockDate": {
+            "type": "string",
+            "description": "Date for when to query the function",
+            "example": "2023-09-01T15:03:23"
+          }
+        },
+        "required": [
+          "function",
+          "abi"
+        ]
+      },
+      "HumanReadableAbi": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "example": [
+          "function balanceOf(address account) view returns (uint256)"
+        ]
+      },
+      "JSONAbi": {
+        "type": "object",
+        "example": {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "name": "balanceOf",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        }
+      },
+      "QueryContractResponse": {
+        "type": "object",
+        "properties": {
+          "response": {
+            "type": "string",
+            "description": "Function response",
+            "example": "0"
           }
         }
       }
