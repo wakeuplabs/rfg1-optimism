@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Contract {
+  address   String     @id
+  functions Function[]
+}
+
+model Function {
+  id         String   @id @default(uuid())
+  Contract   Contract @relation(fields: [contractId], references: [address])
+  contractId String
+  name       String
+  constant   Boolean
+  hash       String
+  params     Param[]
+}
+
+model Param {
+  id         String   @id @default(uuid())
+  input      Boolean
+  type       String
+  name       String?
+  indexed    Boolean?
+  Function   Function @relation(fields: [functionId], references: [id])
+  functionId String
+}

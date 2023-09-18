@@ -1,8 +1,8 @@
-import { Interface, ethers, TransactionRequest, Block } from "ethers";
+import { Interface, ethers, TransactionRequest } from "ethers";
 import { NextFunction, Request, Response } from "express";
-import { dater, provider, signer } from "../provider";
+import { dater, provider, signer } from "../utils";
 import { AbiLine } from "../models/contract";
-
+import contractService from "../services/contract";
 const queryContract = async (
   req: Request,
   res: Response,
@@ -86,7 +86,7 @@ const queryContract = async (
       functionName,
       paramsValueArray
     );
-    // make the call
+    // prepare request
     const transactionReq: TransactionRequest = {
       to: address,
       data: data,
@@ -94,13 +94,18 @@ const queryContract = async (
     if (blockTag !== undefined) transactionReq.blockTag = blockTag;
     else if (blockDate !== undefined)
       transactionReq.blockTag = await getBlockTagForDate(blockDate);
-    console.log(transactionReq);
+    // make the call
     const result = await provider.call(transactionReq);
     const response = contract.interface.decodeFunctionResult(
       functionName,
       result
     );
     res.status(200).json({ response: response.toString() });
+
+    const hash = ethers.id(
+      functionName + abiFunction.inputs.map((i) => i.type + i.name)
+    );
+    contractService.saveFunction(address, abiFunction, hash);
   } catch (error) {
     next(error);
     return;

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 const redirectRoot = async (
-  req: Request,
+  _req: Request,
   res: Response,
   next: NextFunction
 ) => {
@@ -15,7 +15,7 @@ const redirectRoot = async (
   }
 };
 
-const getInfo = async (req: Request, res: Response, next: NextFunction) => {
+const getInfo = async (_req: Request, res: Response, next: NextFunction) => {
   /* 
   #swagger.description = 'Healthcheck endpoint'
   */

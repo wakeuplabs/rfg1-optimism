@@ -1,0 +1,18 @@
+version: "3"
+
+volumes:
+  data:
+
+services:
+  db:
+    container_name: db
+    image: postgres:12
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: optimism
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: local-db

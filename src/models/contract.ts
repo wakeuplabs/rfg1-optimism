@@ -5,7 +5,7 @@ export type AbiLine = {
   stateMutability: string;
   payable: boolean;
   inputs: AbiInput[];
-  outpus: AbiInput[];
+  outputs: AbiInput[];
 };
 
 export type AbiInput = {

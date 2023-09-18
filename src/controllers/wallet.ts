@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { provider, dater } from "../provider";
+import { provider, dater } from "../utils";
 import { BalanceResponse } from "../models/wallet";
 import { Block } from "ethers";
 
