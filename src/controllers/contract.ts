@@ -25,6 +25,8 @@ const queryContract = async (
   }
   */
   try {
+    // todo what happens if you send an abi that is correct except for the return type?
+
     const address = req.params.address;
     const unprocessedAbi = req.body.abi;
     const functionName = req.body.function;
@@ -47,7 +49,11 @@ const queryContract = async (
       const stringAbi = iface.formatJson();
       abi = JSON.parse(stringAbi);
     } else {
-      abi = unprocessedAbi;
+      if (unprocessedAbi.length === undefined) {
+        abi = [unprocessedAbi];
+      } else {
+        abi = unprocessedAbi;
+      }
     }
 
     // chech if function is on ABI
@@ -96,11 +102,16 @@ const queryContract = async (
       transactionReq.blockTag = await getBlockTagForDate(blockDate);
     // make the call
     const result = await provider.call(transactionReq);
-    const response = contract.interface.decodeFunctionResult(
-      functionName,
-      result
-    );
-    res.status(200).json({ response: response.toString() });
+    // todo look into this
+    if (result !== "0x") {
+      const response = contract.interface.decodeFunctionResult(
+        functionName,
+        result
+      );
+      res.status(200).json({ response: response.toString() });
+    } else {
+      returnError(res, "The contract responded with 0x");
+    }
 
     const hash = ethers.id(
       functionName + abiFunction.inputs.map((i) => i.type + i.name)
