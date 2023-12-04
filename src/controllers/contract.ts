@@ -1,8 +1,57 @@
-import { Interface, ethers, TransactionRequest } from "ethers";
+import { ethers, TransactionRequest } from "ethers";
 import { NextFunction, Request, Response } from "express";
+
+// Utils
 import { dater, provider, signer } from "../utils";
-import { AbiLine } from "../models/contract";
+// Models
+import { AbiLine, ensureAbiIsValid,  UnprocessedAbi } from "../models/contract";
+import { CustomError } from "../models/error";
+// Services
 import contractService from "../services/contract";
+// Helpers
+import { abiConverter } from "../helpers/abiConverter";
+
+
+// TODO: define type unprocessed Abi
+interface QueryContractInput {
+  address: string;
+  unprocessedAbi: UnprocessedAbi;
+  functionName: string;
+  params: Record<string, string>;
+  blockTag?: number; 
+  blockDate?: string;
+}
+
+const parseInput = (params: Record<string, unknown>, body: Record<string, unknown>): QueryContractInput => {
+  const address = params.address as string;
+  const unprocessedAbi = body.abi as QueryContractInput["unprocessedAbi"] | undefined;
+  const functionName = body.function as string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const paramsParsed = (body.params as Record<string, any> | undefined) || {};
+  const blockTag = body.blockTag ?? undefined;
+  const blockDate = body.blockDate as string | undefined;
+
+  // Check if all fields are present
+  const abiIsArray =  Array.isArray(unprocessedAbi);
+  const abiIsArrayEmpty = abiIsArray && unprocessedAbi.length === 0;
+  if (unprocessedAbi === undefined || abiIsArrayEmpty)
+    throw new Error("abi must be specified");
+  if (functionName === undefined || functionName === "")
+    throw new Error("function must be specified");
+  if (blockDate !== undefined && !Date.parse(blockDate))
+    throw new Error("Date is not valid");
+
+  return {
+    address,
+    unprocessedAbi,
+    functionName,
+    params: paramsParsed,
+    blockTag: blockTag === undefined ? undefined : +blockTag,
+    blockDate
+  }
+}
+
+
 const queryContract = async (
   req: Request,
   res: Response,
@@ -26,104 +75,61 @@ const queryContract = async (
   */
   try {
     // todo what happens if you send an abi that is correct except for the return type?
-
-    const address = req.params.address;
-    const unprocessedAbi = req.body.abi;
-    const functionName = req.body.function;
-    const params = req.body.params || {};
-    const blockTag = req.body.blockTag;
-    const blockDate = req.body.blockDate;
-
-    // Check if all fields are present
-    if (unprocessedAbi === undefined || unprocessedAbi.length === 0)
-      return returnError(res, "abi must be specified");
-    if (functionName === undefined || functionName === "")
-      return returnError(res, "function must be specified");
-    if (blockDate !== undefined && !Date.parse(blockDate))
-      return returnError(res, "Date is not valid");
+    const { address, unprocessedAbi, functionName, params, blockTag, blockDate } = parseInput(req.params, req.body);
 
     // Convert ABI to JSON format
-    let abi: AbiLine[];
-    if (typeof unprocessedAbi[0] === "string") {
-      const iface = new Interface(unprocessedAbi);
-      const stringAbi = iface.formatJson();
-      abi = JSON.parse(stringAbi);
-    } else {
-      if (unprocessedAbi.length === undefined) {
-        abi = [unprocessedAbi];
-      } else {
-        abi = unprocessedAbi;
-      }
-    }
-
-    // chech if function is on ABI
-    const filteredAbi = abi.filter(
-      (e) => e.type == "function" && e.name === functionName
-    );
-    if (filteredAbi.length === 0)
-      return returnError(res, "Selected function not in ABI");
-    const abiFunction = filteredAbi[0];
-
-    // chech if function is view
-    if (abiFunction.stateMutability !== "view")
-      return returnError(res, "Only 'view' functions are supported");
+    const abi : AbiLine[] = abiConverter.parseToJSON(unprocessedAbi)
+    ensureAbiIsValid(abi, functionName, params)
 
     // check params
-    var paramsValueArray: any[] = [];
-    if (abiFunction.inputs.length > 0) {
-      const paramNames = Object.keys(params);
-      const missingParams = abiFunction.inputs.filter(
-        (e) => !paramNames.includes(e.name)
-      );
-
-      if (missingParams.length > 0)
-        return returnError(
-          res,
-          `Missing params: [${missingParams.map((e) => e.name)}]`
-        );
-
-      // Create array of values that is sorted.
-      const functionInputNames = abiFunction.inputs.map((i) => i.name);
-      paramsValueArray = functionInputNames.map((f) => params[f]);
-    }
+    const paramsValueArray = abiConverter.parseParams(abi, functionName, params);
 
     const contract = new ethers.Contract(address, abi, signer);
     const data = contract.interface.encodeFunctionData(
       functionName,
       paramsValueArray
     );
+
     // prepare request
+    const blockTagForDate = await getBlockTagForDate(blockDate)
     const transactionReq: TransactionRequest = {
       to: address,
       data: data,
+      blockTag: blockTag ?? blockTagForDate,
     };
-    if (blockTag !== undefined) transactionReq.blockTag = blockTag;
-    else if (blockDate !== undefined)
-      transactionReq.blockTag = await getBlockTagForDate(blockDate);
-    // make the call
+
+      // make the call
     const result = await provider.call(transactionReq);
-    // todo look into this
-    if (result !== "0x") {
-      const response = contract.interface.decodeFunctionResult(
-        functionName,
-        result
-      );
-      res.status(200).json({ response: response.toString() });
-    } else {
-      returnError(res, "The contract responded with 0x");
+
+    if (result === "0x") {
+      return returnError(res, "The contract responded with 0x");
     }
 
+    // todo look into this
+    const response = contract.interface.decodeFunctionResult(
+      functionName,
+      result
+    );
+    res.status(200).json({ response: response.toString() });
+
+    const abiFunction = abiConverter.getAbiFunction(abi, functionName);
     const hash = ethers.id(
       functionName + abiFunction.inputs.map((i) => i.type + i.name)
     );
+
     contractService.saveFunction(address, abiFunction, hash);
   } catch (error) {
+    returnError(res, (error as CustomError).message);
     next(error);
     return;
   }
 };
 
-const getBlockTagForDate = async (date: string): Promise<number> => {
+const getBlockTagForDate = async (date?: string): Promise<number | undefined> => {
+  if (!date) {
+    return undefined;
+  }
+
   const block = await dater.getDate(date, true, false);
   return block.block;
 };
