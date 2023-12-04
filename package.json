@@ -9,6 +9,7 @@
     "all": "npm run build && npm run test"
   },
   "dependencies": {
+    "@jest/types": "^29.6.3",
     "@prisma/client": "^5.3.1",
     "@types/axios": "^0.14.0",
     "@types/cors": "^2.8.12",
