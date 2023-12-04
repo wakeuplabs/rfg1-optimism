@@ -3,9 +3,9 @@ import type {Config} from '@jest/types';
 
 const config: Config.InitialOptions = {
   verbose: true,
-  maxConcurrency: 5,
   preset: "ts-jest",
   testEnvironment: "node",
-  modulePathIgnorePatterns: ["build/*"]
+  modulePathIgnorePatterns: ["build/*"],
+  setupFiles: ["<rootDir>/.jest/setEnvVars.ts"]
 };
 export default config;
