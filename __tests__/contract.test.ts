@@ -3,7 +3,12 @@
 import 'jest';
 const request = require("supertest");
 const httpServer = require("../src/server");
-// TODO mock db calls
+
+// Mock contractService
+jest.mock('../src/services/contract', () => ({
+  saveFunction: jest.fn(), // Mock the saveFunction method
+}));
+
 describe("Contract", () => {
   afterAll(() => {
     httpServer.close();

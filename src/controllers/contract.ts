@@ -12,7 +12,6 @@ import contractService from "../services/contract";
 import { abiConverter } from "../helpers/abiConverter";
 
 
-// TODO: define type unprocessed Abi
 interface QueryContractInput {
   address: string;
   unprocessedAbi: UnprocessedAbi;
