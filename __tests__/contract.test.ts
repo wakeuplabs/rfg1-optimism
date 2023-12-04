@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//@ts-ignore
 /* eslint-disable @typescript-eslint/no-var-requires */
 import 'jest';
 const request = require("supertest");
