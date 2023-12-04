@@ -5,7 +5,8 @@
     "start": "node build/swagger.js",
     "test": "jest",
     "postinstall": "tsc",
-    "build": "npm --omit=dev install && rm -rf build/ && prettier --write src/ && tsc && node build/swagger.js",
+    "build": "rm -rf build/ && prettier --write src/ && tsc && node build/swagger.js",
+    "deploy": "npm i && npm run build && npm start",
     "all": "npm run build && npm run test"
   },
   "dependencies": {
