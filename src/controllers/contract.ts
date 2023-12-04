@@ -4,26 +4,30 @@ import { NextFunction, Request, Response } from "express";
 // Utils
 import { dater, provider, signer } from "../utils";
 // Models
-import { AbiLine, ensureAbiIsValid,  UnprocessedAbi } from "../models/contract";
+import { AbiLine, ensureAbiIsValid, UnprocessedAbi } from "../models/contract";
 import { CustomError } from "../models/error";
 // Services
 import contractService from "../services/contract";
 // Helpers
 import { abiConverter } from "../helpers/abiConverter";
 
-
 interface QueryContractInput {
   address: string;
   unprocessedAbi: UnprocessedAbi;
   functionName: string;
   params: Record<string, string>;
-  blockTag?: number; 
+  blockTag?: number;
   blockDate?: string;
 }
 
-const parseInput = (params: Record<string, unknown>, body: Record<string, unknown>): QueryContractInput => {
+const parseInput = (
+  params: Record<string, unknown>,
+  body: Record<string, unknown>
+): QueryContractInput => {
   const address = params.address as string;
-  const unprocessedAbi = body.abi as QueryContractInput["unprocessedAbi"] | undefined;
+  const unprocessedAbi = body.abi as
+    | QueryContractInput["unprocessedAbi"]
+    | undefined;
   const functionName = body.function as string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const paramsParsed = (body.params as Record<string, any> | undefined) || {};
@@ -31,7 +35,7 @@ const parseInput = (params: Record<string, unknown>, body: Record<string, unknow
   const blockDate = body.blockDate as string | undefined;
 
   // Check if all fields are present
-  const abiIsArray =  Array.isArray(unprocessedAbi);
+  const abiIsArray = Array.isArray(unprocessedAbi);
   const abiIsArrayEmpty = abiIsArray && unprocessedAbi.length === 0;
   if (unprocessedAbi === undefined || abiIsArrayEmpty)
     throw new Error("abi must be specified");
@@ -46,10 +50,9 @@ const parseInput = (params: Record<string, unknown>, body: Record<string, unknow
     functionName,
     params: paramsParsed,
     blockTag: blockTag === undefined ? undefined : +blockTag,
-    blockDate
-  }
-}
-
+    blockDate,
+  };
+};
 
 const queryContract = async (
   req: Request,
@@ -74,14 +77,25 @@ const queryContract = async (
   */
   try {
     // todo what happens if you send an abi that is correct except for the return type?
-    const { address, unprocessedAbi, functionName, params, blockTag, blockDate } = parseInput(req.params, req.body);
+    const {
+      address,
+      unprocessedAbi,
+      functionName,
+      params,
+      blockTag,
+      blockDate,
+    } = parseInput(req.params, req.body);
 
     // Convert ABI to JSON format
-    const abi : AbiLine[] = abiConverter.parseToJSON(unprocessedAbi)
-    ensureAbiIsValid(abi, functionName, params)
+    const abi: AbiLine[] = abiConverter.parseToJSON(unprocessedAbi);
+    ensureAbiIsValid(abi, functionName, params);
 
     // check params
-    const paramsValueArray = abiConverter.parseParams(abi, functionName, params);
+    const paramsValueArray = abiConverter.parseParams(
+      abi,
+      functionName,
+      params
+    );
 
     const contract = new ethers.Contract(address, abi, signer);
     const data = contract.interface.encodeFunctionData(
@@ -90,14 +104,14 @@ const queryContract = async (
     );
 
     // prepare request
-    const blockTagForDate = await getBlockTagForDate(blockDate)
+    const blockTagForDate = await getBlockTagForDate(blockDate);
     const transactionReq: TransactionRequest = {
       to: address,
       data: data,
       blockTag: blockTag ?? blockTagForDate,
     };
 
-      // make the call
+    // make the call
     const result = await provider.call(transactionReq);
 
     if (result === "0x") {
@@ -124,7 +138,9 @@ const queryContract = async (
   }
 };
 
-const getBlockTagForDate = async (date?: string): Promise<number | undefined> => {
+const getBlockTagForDate = async (
+  date?: string
+): Promise<number | undefined> => {
   if (!date) {
     return undefined;
   }
