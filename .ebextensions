@@ -1,0 +1,11 @@
+files:
+  "/etc/nginx/conf.d/proxy.conf":
+    mode: "000644"
+    owner: root
+    group: root
+    content: |
+      http {
+        types_hash_max_size 2048;
+        types_hash_bucket_size 64;
+        # Other configurations...
+      }
