@@ -18,7 +18,7 @@ const parseToJSON = (unprocessedAbi: UnprocessedAbi): AbiLine[] => {
   }
 
   return unprocessedAbi as AbiLine[];
-}
+};
 
 /**
  * Parses parameters for a specific function based on its ABI definition.
@@ -28,7 +28,11 @@ const parseToJSON = (unprocessedAbi: UnprocessedAbi): AbiLine[] => {
  * @returns Array of values parsed based on function parameters.
  * @throws Throws an error if there are missing parameters.
  */
-const parseParams = (abi: AbiLine[], functionName: string, params: Record<string, string>): any[] => {
+const parseParams = (
+  abi: AbiLine[],
+  functionName: string,
+  params: Record<string, string>
+): any[] => {
   const abiFunction = getAbiFunction(abi, functionName);
 
   if (abiFunction.inputs.length === 0) {
@@ -41,9 +45,7 @@ const parseParams = (abi: AbiLine[], functionName: string, params: Record<string
   );
 
   if (missingParams.length > 0) {
-    throw new Error(
-      `Missing params: [${missingParams.map((e) => e.name)}]`
-    );
+    throw new Error(`Missing params: [${missingParams.map((e) => e.name)}]`);
   }
 
   // Create an array of values sorted by function input names.
@@ -51,7 +53,7 @@ const parseParams = (abi: AbiLine[], functionName: string, params: Record<string
   const paramsValueArray = functionInputNames.map((f) => params[f]);
 
   return paramsValueArray;
-}
+};
 
 /**
  * Retrieves the ABI function definition by its name.
@@ -62,11 +64,11 @@ const parseParams = (abi: AbiLine[], functionName: string, params: Record<string
 const getAbiFunction = (abi: AbiLine[], functionName: string) => {
   const filteredAbi = abi.filter(
     (e) => e.type == "function" && e.name === functionName
-  );  
+  );
   const abiFunction = filteredAbi[0];
 
-  return abiFunction
-}
+  return abiFunction;
+};
 
 /**
  * AbiConverter module containing functions to parse ABI data.
@@ -74,5 +76,5 @@ const getAbiFunction = (abi: AbiLine[], functionName: string) => {
 export const abiConverter = {
   parseToJSON,
   parseParams,
-  getAbiFunction
-}
+  getAbiFunction,
+};
