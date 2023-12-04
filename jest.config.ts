@@ -1,11 +1,5 @@
-import type {Config} from '@jest/types';
-
-
-const config: Config.InitialOptions = {
-  verbose: true,
-  preset: "ts-jest",
-  testEnvironment: "node",
-  modulePathIgnorePatterns: ["build/*"],
-  setupFiles: ["<rootDir>/.jest/setEnvVars.ts"]
+/** @type {import('ts-jest').JestConfigWithTsJest} */
+module.exports = {
+	preset: "ts-jest",
+	testEnvironment: "node",
 };
-export default config;
