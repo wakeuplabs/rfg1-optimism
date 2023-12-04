@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { provider, dater } from "../utils";
 import { BalanceResponse } from "../models/wallet";
-import { Block } from "ethers";
 
 const returnBalance = (res: Response, address: string, balance: bigint) => {
   const balanceResponse: BalanceResponse = {
@@ -99,9 +98,10 @@ const getBalanceAtDate = async (
   */
   try {
     const address = req.params.address;
-    const date = Date.parse(req.params.date);
+    const date = new Date(req.params.date);
 
-    const block = await dater.getDate(date, true, false);
+    const block: EthDater.BlockResult = await dater.getDate(date, true, false);
+
     const balance: bigint = await provider.getBalance(address, block.block);
     returnBalance(res, address, balance);
   } catch (error) {
