@@ -36,7 +36,7 @@ const createFunction = (
     data: {
       contractId: contractAddress,
       name: abiFunction.name,
-      constant: abiFunction.constant,
+      constant: !!abiFunction.constant,
       hash: hash,
       params: {
         createMany: {
