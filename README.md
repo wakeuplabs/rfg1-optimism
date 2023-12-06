@@ -8,9 +8,9 @@ It could be extended to any EVM blockchain.
 
 The implementation is fully open source with MIT license.
 
-Here there is a **reference implementation** working on Optimism Goerli:
-https://rfg1-optimism.wakeuplabs.link
-
+Here there are 2 **reference implementations**:
+* Optimism Mainnet: https://rfg1-optimism.wakeuplabs.link
+* Optimism Goerli: https://rfg1-optimism-testnet.wakeuplabs.link
 
 <br>
 
