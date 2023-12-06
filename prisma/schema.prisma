@@ -9,6 +9,8 @@ datasource db {
 
 model Contract {
   address   String     @id
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now())
   functions Function[]
 }
 
@@ -19,6 +21,8 @@ model Function {
   name       String
   constant   Boolean
   hash       String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now())
   params     Param[]
 }
 
@@ -30,4 +34,6 @@ model Param {
   indexed    Boolean?
   Function   Function @relation(fields: [functionId], references: [id])
   functionId String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now())
 }

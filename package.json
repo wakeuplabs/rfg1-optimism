@@ -6,7 +6,8 @@
     "test": "jest",
     "postinstall": "tsc",
     "build": "rm -rf build/ && prettier --write src/ && tsc && node build/swagger.js",
-    "deploy": "npm i && npm run build && npm start",
+    "migrate": "prisma migrate deploy",
+    "deploy": "npm i && npm run build && npm run migrate && npm start",
     "all": "npm run build && npm run test"
   },
   "dependencies": {
