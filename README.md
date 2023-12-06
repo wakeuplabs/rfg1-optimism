@@ -26,7 +26,7 @@ Upcoming enhancements include:
 ## Try It Out
 Check out our implementations:
 - Optimism Mainnet: [RFG1 Optimism WakeUp Labs](https://rfg1-optimism.wakeuplabs.link)
-- Optimism Goerli Testnet: [RFG1 Optimism Testnet WakeUp Labs](https://rfg1-optimism-testnet.wakeuplabs.link/)
+- Optimism Goerli: [RFG1 Optimism Testnet WakeUp Labs](https://rfg1-optimism-testnet.wakeuplabs.link/)
 
 ## Get Involved
 Contributions and feedback are greatly appreciated! Feel free to contribute to this open-source project on [GitHub](https://github.com/WakeUpLabs/RFG1-Optimism-Project).
