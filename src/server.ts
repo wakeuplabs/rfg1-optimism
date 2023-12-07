@@ -5,6 +5,8 @@ import routes from "./routes";
 import middlewares from "./middlewares";
 import cors from "cors";
 import "dotenv/config";
+import { PrismaClient } from "@prisma/client";
+import { createContext } from "./context";
 
 const app: Express = express();
 
@@ -19,7 +21,10 @@ app.use(express.json());
 /** Takes care of file upload */
 
 /** Routes */
-app.use("/", routes);
+/** DB */
+const client = new PrismaClient();
+/** Routes */
+app.use("/", createContext(client), routes);
 
 /** Error handling */
 app.use(middlewares.notFound);

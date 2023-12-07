@@ -2,7 +2,7 @@ import { ethers, TransactionRequest } from "ethers";
 import { NextFunction, Request, Response } from "express";
 
 // Utils
-import { dater, provider, signer } from "../utils";
+import { dater, provider } from "../utils";
 // Models
 import { AbiLine, ensureAbiIsValid, UnprocessedAbi } from "../models/contract";
 import { CustomError } from "../models/error";
@@ -10,6 +10,7 @@ import { CustomError } from "../models/error";
 import contractService from "../services/contract";
 // Helpers
 import { abiConverter } from "../helpers/abiConverter";
+import { errorLogger } from "./errorLog";
 
 interface QueryContractInput {
   address: string;
@@ -43,6 +44,8 @@ const parseInput = (
     throw new Error("function must be specified");
   if (blockDate !== undefined && !Date.parse(blockDate))
     throw new Error("Date is not valid");
+  if (blockDate !== undefined && blockTag !== undefined)
+    throw new Error("Block tag and block date is not valid at the same time");
 
   return {
     address,
@@ -97,7 +100,7 @@ const queryContract = async (
       params
     );
 
-    const contract = new ethers.Contract(address, abi, signer);
+    const contract = new ethers.Contract(address, abi);
     const data = contract.interface.encodeFunctionData(
       functionName,
       paramsValueArray
@@ -133,8 +136,8 @@ const queryContract = async (
     contractService.saveFunction(address, abiFunction, hash);
   } catch (error) {
     returnError(res, (error as CustomError).message);
+    errorLogger(req.context, error);
     next(error);
-    return;
   }
 };
 

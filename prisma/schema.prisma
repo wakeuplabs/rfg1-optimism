@@ -37,3 +37,12 @@ model Param {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @default(now())
 }
+
+model ErrorLog {
+  id          String   @id
+  application String
+  message     String
+  data        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+}

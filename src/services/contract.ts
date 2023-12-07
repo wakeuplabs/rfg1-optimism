@@ -1,4 +1,3 @@
-import { boolean } from "yup";
 import { AbiInput, AbiLine } from "../models/contract";
 import { prisma } from "../utils";
 
