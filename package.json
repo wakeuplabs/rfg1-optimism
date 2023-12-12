@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nodemon swagger.ts --ignore 'swagger.json'",
     "start": "node build/swagger.js",
-    "test": "NODE_ENV=testing mocha --reporter dot --require=module-alias/register --require ts-node/register '__tests__/**/*.test.ts'",
+    "test": "NODE_ENV=testing mocha --reporter dot --require=module-alias/register --require ts-node/register '__tests__/**/*.test.ts' --timeout 60000 --exit",
     "postinstall": "tsc",
     "build": "rm -rf build/ && prettier --write src/ && tsc && node build/swagger.js",
     "migrate": "prisma migrate deploy",

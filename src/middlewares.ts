@@ -12,7 +12,7 @@ async function errorHandler(err: Error, req: Request, res: Response) {
   const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
   res.status(statusCode);
 
-  await errorLogger(req.context, err);
+  await errorLogger((req as any).context, err);
 
   res.json({
     message: err.message,

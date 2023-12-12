@@ -13,6 +13,6 @@ export const createContext =
       prisma: client,
     };
 
-    req.context = context;
+    (req as any).context = context;
     next();
   };

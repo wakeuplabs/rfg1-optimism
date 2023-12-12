@@ -69,8 +69,8 @@ const createContract = (contractAddress: string) => {
   });
 };
 
-const getContract = (contractAddress: string) => {
-  return prisma.contract.findFirst({
+const getContract = async (contractAddress: string) => {
+  return await prisma.contract.findFirst({
     where: {
       address: contractAddress,
     },

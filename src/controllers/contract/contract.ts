@@ -1,16 +1,24 @@
-import { ethers, TransactionRequest } from "ethers";
+import { ethers } from "ethers";
 import { NextFunction, Request, Response } from "express";
 
-// Utils
-import { dater, provider } from "../utils";
 // Models
-import { AbiLine, ensureAbiIsValid, UnprocessedAbi } from "../models/contract";
-import { CustomError } from "../models/error";
+import {
+  AbiLine,
+  ensureAbiIsValid,
+  UnprocessedAbi,
+} from "src/models/contract";
+import { CustomError } from "src/models/error";
+
 // Services
-import contractService from "../services/contract";
+import contractService from "src/services/contract";
+import contractProvider from "src/services/contractProvider";
+
 // Helpers
-import { abiConverter } from "../helpers/abiConverter";
-import { errorLogger } from "./errorLog";
+import { abiConverter } from "src/helpers/abiConverter";
+import { getBlockTagForDate } from "src/helpers/blocktag";
+
+// Controllers
+import { errorLogger } from "src/controllers/errorLog";
 
 interface QueryContractInput {
   address: string;
@@ -100,56 +108,29 @@ const queryContract = async (
       params
     );
 
-    const contract = new ethers.Contract(address, abi);
-    const data = contract.interface.encodeFunctionData(
-      functionName,
-      paramsValueArray
-    );
-
-    // prepare request
     const blockTagForDate = await getBlockTagForDate(blockDate);
-    const transactionReq: TransactionRequest = {
-      to: address,
-      data: data,
-      blockTag: blockTag ?? blockTagForDate,
-    };
-
-    // make the call
-    const result = await provider.call(transactionReq);
-
-    if (result === "0x") {
-      return returnError(res, "The contract responded with 0x");
-    }
-
-    // todo look into this
-    const response = contract.interface.decodeFunctionResult(
+  
+    const response = await contractProvider.call({
+      address,
+      abi,
       functionName,
-      result
-    );
-    res.status(200).json({ response: response.toString() });
+      params: paramsValueArray,
+      blockTag: blockTag ?? blockTagForDate
+    })
 
     const abiFunction = abiConverter.getAbiFunction(abi, functionName);
     const hash = ethers.id(
       functionName + abiFunction.inputs.map((i) => i.type + i.name)
     );
 
-    contractService.saveFunction(address, abiFunction, hash);
+    await contractService.saveFunction(address, abiFunction, hash);
+
+    res.status(200).json({ response: response.toString() });
   } catch (error) {
     returnError(res, (error as CustomError).message);
-    errorLogger(req.context, error);
+    errorLogger((req as any).context, error);
     next(error);
   }
-};
-
-const getBlockTagForDate = async (
-  date?: string
-): Promise<number | undefined> => {
-  if (!date) {
-    return undefined;
-  }
-
-  const block = await dater.getDate(date, true, false);
-  return block.block;
 };
 
 const returnError = (res: Response, message: string) => {
