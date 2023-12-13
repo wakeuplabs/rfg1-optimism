@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import "dotenv/config";
+import { errorLogger } from "./controllers/errorLog";
 
 function notFound(req: Request, res: Response, next: NextFunction) {
   res.status(404);
@@ -7,14 +8,11 @@ function notFound(req: Request, res: Response, next: NextFunction) {
   next(error);
 }
 
-function errorHandler(
-  err: Error,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+async function errorHandler(err: Error, req: Request, res: Response) {
   const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
   res.status(statusCode);
+
+  await errorLogger((req as any).context, err);
 
   res.json({
     message: err.message,

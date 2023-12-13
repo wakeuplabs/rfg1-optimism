@@ -1,15 +1,24 @@
-import { ethers, TransactionRequest } from "ethers";
+import { ethers } from "ethers";
 import { NextFunction, Request, Response } from "express";
 
-// Utils
-import { dater, provider, signer } from "../utils";
 // Models
-import { AbiLine, ensureAbiIsValid, UnprocessedAbi } from "../models/contract";
-import { CustomError } from "../models/error";
+import {
+  AbiLine,
+  ensureAbiIsValid,
+  UnprocessedAbi,
+} from "../../models/contract";
+import { CustomError } from "../../models/error";
+
 // Services
-import contractService from "../services/contract";
+import functionService from "../../services/function";
+import contractProvider from "../../services/contractProvider";
+
 // Helpers
-import { abiConverter } from "../helpers/abiConverter";
+import { abiConverter } from "../../helpers/abiConverter";
+import { getBlockTagForDate } from "../../helpers/blocktag";
+
+// Controllers
+import { errorLogger } from "../../controllers/errorLog";
 
 interface QueryContractInput {
   address: string;
@@ -43,6 +52,8 @@ const parseInput = (
     throw new Error("function must be specified");
   if (blockDate !== undefined && !Date.parse(blockDate))
     throw new Error("Date is not valid");
+  if (blockDate !== undefined && blockTag !== undefined)
+    throw new Error("Block tag and block date is not valid at the same time");
 
   return {
     address,
@@ -97,56 +108,29 @@ const queryContract = async (
       params
     );
 
-    const contract = new ethers.Contract(address, abi, signer);
-    const data = contract.interface.encodeFunctionData(
-      functionName,
-      paramsValueArray
-    );
-
-    // prepare request
     const blockTagForDate = await getBlockTagForDate(blockDate);
-    const transactionReq: TransactionRequest = {
-      to: address,
-      data: data,
-      blockTag: blockTag ?? blockTagForDate,
-    };
 
-    // make the call
-    const result = await provider.call(transactionReq);
-
-    if (result === "0x") {
-      return returnError(res, "The contract responded with 0x");
-    }
-
-    // todo look into this
-    const response = contract.interface.decodeFunctionResult(
+    const response = await contractProvider.call({
+      address,
+      abi,
       functionName,
-      result
-    );
-    res.status(200).json({ response: response.toString() });
+      params: paramsValueArray,
+      blockTag: blockTag ?? blockTagForDate,
+    });
 
     const abiFunction = abiConverter.getAbiFunction(abi, functionName);
     const hash = ethers.id(
       functionName + abiFunction.inputs.map((i) => i.type + i.name)
     );
 
-    contractService.saveFunction(address, abiFunction, hash);
+    await functionService.saveFunction(address, abiFunction, hash);
+
+    res.status(200).json({ response: response.toString() });
   } catch (error) {
     returnError(res, (error as CustomError).message);
+    errorLogger((req as any).context, error);
     next(error);
-    return;
   }
-};
-
-const getBlockTagForDate = async (
-  date?: string
-): Promise<number | undefined> => {
-  if (!date) {
-    return undefined;
-  }
-
-  const block = await dater.getDate(date, true, false);
-  return block.block;
 };
 
 const returnError = (res: Response, message: string) => {
@@ -154,4 +138,4 @@ const returnError = (res: Response, message: string) => {
   return;
 };
 
-export default { queryContract };
+export { queryContract };

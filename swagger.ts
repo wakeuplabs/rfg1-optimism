@@ -59,6 +59,34 @@ const doc = {
         },
         required: ['function', 'abi']
       },
+      QueryContractKnownABIRequest: {
+        type: 'object',
+        properties: {
+          function: {
+            type: 'string',
+            description: 'Name of the function to call',
+            example: 'balanceOf'
+          },
+          params: {
+            type: 'object',
+            description: 'Neccesary parameters for the function',
+            example: {
+              balanceOf: '0x0'
+            }
+          },
+          blockTag: {
+            type: 'number',
+            description: 'BlockTag number for when to query the function',
+            example: 4312
+          },
+          blockDate: {
+            type: 'string',
+            description: 'Date for when to query the function',
+            example: '2023-09-01T15:03:23'
+          }
+        },
+        required: ['function']
+      },
       HumanReadableAbi: {
         type: 'array',
         items: {
