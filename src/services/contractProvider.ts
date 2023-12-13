@@ -1,6 +1,6 @@
 import { ethers, TransactionRequest } from "ethers";
-import { AbiLine } from "src/models/contract";
-import { provider } from "src/utils";
+import { AbiLine } from "../models/contract";
+import { provider } from "../utils";
 
 interface CallProps {
   address: string;
@@ -10,12 +10,15 @@ interface CallProps {
   blockTag?: number;
 }
 
-const call = async ({ address, blockTag, functionName, params, abi }: CallProps) => {
+const call = async ({
+  address,
+  blockTag,
+  functionName,
+  params,
+  abi,
+}: CallProps) => {
   const contract = new ethers.Contract(address, abi);
-  const data = contract.interface.encodeFunctionData(
-    functionName,
-    params
-  );
+  const data = contract.interface.encodeFunctionData(functionName, params);
 
   // prepare request
   const transactionReq: TransactionRequest = {
@@ -28,7 +31,7 @@ const call = async ({ address, blockTag, functionName, params, abi }: CallProps)
   const result = await provider.call(transactionReq);
 
   if (result === "0x") {
-    throw new Error("The contract responded with 0x")
+    throw new Error("The contract responded with 0x");
   }
 
   // todo look into this
@@ -38,10 +41,10 @@ const call = async ({ address, blockTag, functionName, params, abi }: CallProps)
   );
 
   return response;
-}
+};
 
 const contractProvider = {
-  call
-}
+  call,
+};
 
 export default contractProvider;

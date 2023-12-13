@@ -6,19 +6,19 @@ import {
   AbiLine,
   ensureAbiIsValid,
   UnprocessedAbi,
-} from "src/models/contract";
-import { CustomError } from "src/models/error";
+} from "../../models/contract";
+import { CustomError } from "../../models/error";
 
 // Services
-import contractService from "src/services/contract";
-import contractProvider from "src/services/contractProvider";
+import functionService from "../../services/function";
+import contractProvider from "../../services/contractProvider";
 
 // Helpers
-import { abiConverter } from "src/helpers/abiConverter";
-import { getBlockTagForDate } from "src/helpers/blocktag";
+import { abiConverter } from "../../helpers/abiConverter";
+import { getBlockTagForDate } from "../../helpers/blocktag";
 
 // Controllers
-import { errorLogger } from "src/controllers/errorLog";
+import { errorLogger } from "../../controllers/errorLog";
 
 interface QueryContractInput {
   address: string;
@@ -109,21 +109,21 @@ const queryContract = async (
     );
 
     const blockTagForDate = await getBlockTagForDate(blockDate);
-  
+
     const response = await contractProvider.call({
       address,
       abi,
       functionName,
       params: paramsValueArray,
-      blockTag: blockTag ?? blockTagForDate
-    })
+      blockTag: blockTag ?? blockTagForDate,
+    });
 
     const abiFunction = abiConverter.getAbiFunction(abi, functionName);
     const hash = ethers.id(
       functionName + abiFunction.inputs.map((i) => i.type + i.name)
     );
 
-    await contractService.saveFunction(address, abiFunction, hash);
+    await functionService.saveFunction(address, abiFunction, hash);
 
     res.status(200).json({ response: response.toString() });
   } catch (error) {
@@ -138,4 +138,4 @@ const returnError = (res: Response, message: string) => {
   return;
 };
 
-export default { queryContract };
+export { queryContract };

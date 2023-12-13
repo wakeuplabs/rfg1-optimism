@@ -1,4 +1,4 @@
-import { dater } from "src/utils";
+import { dater } from "../utils";
 
 export const getBlockTagForDate = async (
   date?: string
@@ -10,4 +10,3 @@ export const getBlockTagForDate = async (
   const block = await dater.getDate(date, true, false);
   return block.block;
 };
-

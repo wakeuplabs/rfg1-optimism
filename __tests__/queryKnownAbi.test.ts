@@ -58,6 +58,13 @@ describe("Query Known ABI", () => {
 
     describe.skip("Happy Path", () => {
       it("Should return correct value", async () => {
+        const getContract = sinon.stub(contractService, 'getContract')
+        .returns(Promise.resolve({
+          address:  contractAddress,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }));
+
         const body = {
           function: "balanceOf",
           params: {
@@ -68,51 +75,8 @@ describe("Query Known ABI", () => {
         const response = await request.put(url).send(body);
         expect(response.statusCode).to.be.equal(200);
         expect(response.body.response).to.be.equal("10000000000000000000000");
-      });
 
-      it("Should return correct value with JSON Abi", async () => {
-        const body = {
-          function: "balanceOf",
-          abi: {
-            "inputs": [
-              {
-                "internalType": "address",
-                "name": "account",
-                "type": "address"
-              }
-            ],
-            "name": "balanceOf",
-            "outputs": [
-              {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-              }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-          },
-          params: {
-            "account": account
-          },
-          blockTag: 14870075
-        };
-        const response = await request.put(url).send(body);
-        expect(response.statusCode).to.be.equal(200);
-        expect(response.body.response).to.be.equal("10000000000000000000000");
-      });
-
-      it("Should return correct value when sending blockDate", async () => {
-        const body = {
-          function: "balanceOf",
-          params: {
-            "account": account
-          },
-          blockDate: "2023-09-20T12:03:38"
-        };
-        const response = await request.put(url).send(body);
-        expect(response.statusCode).to.be.equal(200);
-        expect(response.body.response).to.be.equal("10000000000000000000000");
+        getContract.restore()
       });
     })
   })

@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { Context } from "src/context";
+import { Context } from "../context";
 import { createPrimaryKey } from "../helpers/uuid";
 
 export const errorLogger = async (

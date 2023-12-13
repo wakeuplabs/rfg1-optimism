@@ -1,10 +1,8 @@
 import { expect, request } from "./config";
-import contractService from '../src/services/contract';
+import functionService from '../src/services/function';
 import Sinon from "sinon";
 
-Sinon.stub(contractService, 'saveFunction').returns(Promise.resolve());
-Sinon.stub(contractService, 'getContract')
-.returns(Promise.resolve(null));
+Sinon.stub(functionService, 'saveFunction').returns(Promise.resolve());
 
 describe("Contract", () => {
   const contractAddress = "0x50e67cac82fA0e67F456B6536ea609103DfDa98B"

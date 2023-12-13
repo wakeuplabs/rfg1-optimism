@@ -2,15 +2,16 @@ import { ethers } from "ethers";
 import { NextFunction, Request, Response } from "express";
 
 // Services
-import contractService from "src/services/contract";
-import contractProvider from "src/services/contractProvider";
+import functionService from "../../services/function";
+import contractService from "../../services/contract";
+import contractProvider from "../../services/contractProvider";
 
 // Helpers
-import { getBlockTagForDate } from "src/helpers/blocktag";
-import { abiConverter } from "src/helpers/abiConverter";
+import { getBlockTagForDate } from "../../helpers/blocktag";
+import { abiConverter } from "../../helpers/abiConverter";
 
 // Controllers
-import { errorLogger } from "src/controllers/errorLog";
+import { errorLogger } from "../../controllers/errorLog";
 
 interface QueryKnownABIInput {
   address: string;
@@ -54,7 +55,7 @@ const queryKnownABI = async (
   next: NextFunction
 ) => {
   /*
-  #swagger.description = 'Queries `view function` of specified contract'
+  #swagger.description = 'Queries `view function` of known contracts'
   #swagger.parameters['address'] = { 
     in: 'path',
     description: 'Address of the contract',
@@ -63,7 +64,7 @@ const queryKnownABI = async (
   }
   #swagger.requestBody = { 
     required: true,
-    schema: { $ref: '#/definitions/QueryContractRequest'}
+    schema: { $ref: '#/definitions/QueryContractKnownABIRequest'}
   }
   #swagger.responses[200] = { 
     "schema": { $ref: '#/definitions/QueryContractResponse' }
@@ -80,7 +81,23 @@ const queryKnownABI = async (
       throw new Error("Contract unknown");
     }
 
-    const abi = abiConverter.parseToJSON(["function balanceOf(address account) view returns (uint256)"]);
+    const abi = abiConverter.parseFromParams({
+      functionName,
+      params: [
+        {
+          name: "account",
+          indexed: null,
+          type: "address",
+        },
+      ],
+      outputs: [
+        {
+          name: "",
+          indexed: null,
+          type: "uint256",
+        },
+      ],
+    });
 
     // check params
     const paramsValueArray = abiConverter.parseParams(
@@ -88,24 +105,23 @@ const queryKnownABI = async (
       functionName,
       params
     );
-    
 
     const blockTagForDate = await getBlockTagForDate(blockDate);
-  
+
     const response = await contractProvider.call({
       address,
       abi,
       functionName,
       params: paramsValueArray,
-      blockTag: blockTag ?? blockTagForDate
-    })
+      blockTag: blockTag ?? blockTagForDate,
+    });
 
     const abiFunction = abiConverter.getAbiFunction(abi, functionName);
     const hash = ethers.id(
       functionName + abiFunction.inputs.map((i) => i.type + i.name)
     );
 
-    await contractService.saveFunction(address, abiFunction, hash);
+    await functionService.saveFunction(address, abiFunction, hash);
 
     res.status(200).json({ response: response.toString() });
   } catch (error) {
@@ -116,4 +132,4 @@ const queryKnownABI = async (
   }
 };
 
-export default { queryKnownABI };
+export { queryKnownABI };

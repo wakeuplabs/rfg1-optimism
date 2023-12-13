@@ -1,5 +1,6 @@
 import { Interface } from "ethers";
 import { AbiLine, UnprocessedAbi } from "../models/contract";
+import { Param } from "../models/param";
 
 /**
  * Parses the unprocessed ABI to JSON format.
@@ -70,11 +71,44 @@ const getAbiFunction = (abi: AbiLine[], functionName: string) => {
   return abiFunction;
 };
 
+interface ParseFromParamsProps {
+  functionName: string;
+  params: Param[];
+  outputs: Param[];
+}
+
+const parseFromParams = ({
+  functionName,
+  outputs,
+  params,
+}: ParseFromParamsProps): AbiLine[] => {
+  const iface = new Interface([
+    {
+      inputs: params.map((param) => ({
+        internalType: param.type,
+        type: param.type,
+        name: param.name,
+      })),
+      name: functionName,
+      outputs: outputs.map((param) => ({
+        internalType: param.type,
+        type: param.type,
+        name: param.name,
+      })),
+      stateMutability: "view",
+      type: "function",
+    },
+  ]);
+  const stringAbi = iface.formatJson();
+  return JSON.parse(stringAbi);
+};
+
 /**
  * AbiConverter module containing functions to parse ABI data.
  */
 export const abiConverter = {
   parseToJSON,
+  parseFromParams,
   parseParams,
   getAbiFunction,
 };
