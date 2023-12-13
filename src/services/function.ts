@@ -10,8 +10,23 @@ const getFunctionByHash = (contractAddress: string, hash: string) => {
       hash: hash,
     },
     include: {
-      params: true
-    }
+      params: true,
+    },
+  });
+};
+
+const getFunctionByName = async (
+  contractAddress: string,
+  functionName: string
+) => {
+  return await prisma.function.findFirst({
+    where: {
+      contractId: contractAddress,
+      name: functionName,
+    },
+    include: {
+      params: true,
+    },
   });
 };
 
@@ -66,4 +81,4 @@ const getAbiFunctionParams = (abiFunction: AbiLine) => {
     .concat(abiFunction.outputs.map((i) => toDataType(i, false)));
 };
 
-export default { saveFunction, createFunction };
+export default { saveFunction, getFunctionByName, createFunction };

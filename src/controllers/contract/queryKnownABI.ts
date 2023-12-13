@@ -10,6 +10,9 @@ import contractProvider from "../../services/contractProvider";
 import { getBlockTagForDate } from "../../helpers/blocktag";
 import { abiConverter } from "../../helpers/abiConverter";
 
+// Models
+import { Param } from "../../models/param";
+
 // Controllers
 import { errorLogger } from "../../controllers/errorLog";
 
@@ -81,22 +84,36 @@ const queryKnownABI = async (
       throw new Error("Contract unknown");
     }
 
+    const functionContract = await functionService.getFunctionByName(
+      address,
+      functionName
+    );
+    if (!functionContract) {
+      throw new Error("Function not found");
+    }
+
+    const [inputs, outputs] = functionContract.params.reduce(([accInputs, accOutputs], item) => {
+      if (item.input) {
+        accInputs.push({
+          name: item.name ?? "",
+          indexed: item.indexed ?? null,
+          type: item.type,            
+        });
+      } else {
+        accOutputs.push({
+          name: item.name ?? "",
+          indexed: item.indexed ?? null,
+          type: item.type,  
+        });
+      }
+
+      return [accInputs, accOutputs];
+    }, [[], []] as [Param[], Param[]])
+
     const abi = abiConverter.parseFromParams({
       functionName,
-      params: [
-        {
-          name: "account",
-          indexed: null,
-          type: "address",
-        },
-      ],
-      outputs: [
-        {
-          name: "",
-          indexed: null,
-          type: "uint256",
-        },
-      ],
+      params: inputs,
+      outputs,
     });
 
     // check params

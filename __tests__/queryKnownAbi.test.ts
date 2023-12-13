@@ -3,10 +3,10 @@ import { expect, request } from "./config";
 import sinon from "sinon";
 
 import contractService from "../src/services/contract";
+import functionService from "../src/services/function";
+import { account, contractAddress, contractFound, functionFound } from "./contract.mother";
 
 describe("Query Known ABI", () => {
-  const contractAddress = "0x50e67cac82fA0e67F456B6536ea609103DfDa98B"
-  const account = "0x5Dda4e44d1C4fAb2704A9557509Db94EB4c27CD2"
   const url = `/${contractAddress}/queryKnownABI`;
  
   describe("GET /:address/queryKnownABI", () => {
@@ -54,16 +54,28 @@ describe("Query Known ABI", () => {
 
         getContractUnkonwn.restore();
       });
+      it("Should respond with 400 when params are not found", async () => {
+        const getContractUnkonwn = sinon.stub(contractService, 'getContract').returns(Promise.resolve(contractFound));
+        const getFunctionNotFound = sinon.stub(functionService, 'getFunctionByName').returns(Promise.resolve(null));
+
+        const body = {
+          blockDate: "2023-3-3",
+          function: "balanceOf",
+          abi: ["function balanceOf(address account) view returns (string)"]
+        };
+        const response = await request.put(url).send(body);
+        expect(response.statusCode).to.be.equal(400);
+        expect(response.body.message).to.be.equal("Function not found");
+
+        getContractUnkonwn.restore();
+        getFunctionNotFound.restore();
+      });
     });
 
-    describe.skip("Happy Path", () => {
+    describe("Happy Path", () => {
       it("Should return correct value", async () => {
-        const getContract = sinon.stub(contractService, 'getContract')
-        .returns(Promise.resolve({
-          address:  contractAddress,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        }));
+        const getContractMock = sinon.stub(contractService, 'getContract').returns(Promise.resolve(contractFound));
+        const getFunctionNotFound = sinon.stub(functionService, 'getFunctionByName').returns(Promise.resolve(functionFound as any));
 
         const body = {
           function: "balanceOf",
@@ -76,7 +88,26 @@ describe("Query Known ABI", () => {
         expect(response.statusCode).to.be.equal(200);
         expect(response.body.response).to.be.equal("10000000000000000000000");
 
-        getContract.restore()
+        getContractMock.restore()
+        getFunctionNotFound.restore();
+      });
+      it("Should return correct value", async () => {
+        const getContractMock = sinon.stub(contractService, 'getContract').returns(Promise.resolve(contractFound));
+        const getFunctionNotFound = sinon.stub(functionService, 'getFunctionByName').returns(Promise.resolve(functionFound as any));
+
+        const body = {
+          function: "balanceOf",
+          params: {
+            "account": account
+          },
+          blockDate: "2023-09-20T12:03:38"
+        };
+        const response = await request.put(url).send(body);
+        expect(response.statusCode).to.be.equal(200);
+        expect(response.body.response).to.be.equal("10000000000000000000000");
+
+        getContractMock.restore()
+        getFunctionNotFound.restore();
       });
     })
   })

@@ -1,5 +1,5 @@
 export interface Param {
-  type: "uint256" | "address";
+  type: string;
   name: string;
   indexed: boolean | null;
 }
