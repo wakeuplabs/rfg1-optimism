@@ -1,3 +1,4 @@
+import { describe, it } from "mocha";
 import { expect, request } from "./config";
 
 describe("Wallet", () => {

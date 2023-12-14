@@ -5,6 +5,7 @@ import sinon from "sinon";
 import contractService from "../services/contract";
 import functionService from "../services/function";
 import { account, contractAddress, contractFound, functionFound } from "./contract.mother";
+import { describe, it } from "mocha";
 
 describe("Query Known ABI", () => {
   const url = `/${contractAddress}/queryKnownABI`;
