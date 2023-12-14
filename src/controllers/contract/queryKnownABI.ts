@@ -92,23 +92,26 @@ const queryKnownABI = async (
       throw new Error("Function not found");
     }
 
-    const [inputs, outputs] = functionContract.params.reduce(([accInputs, accOutputs], item) => {
-      if (item.input) {
-        accInputs.push({
-          name: item.name ?? "",
-          indexed: item.indexed ?? null,
-          type: item.type,            
-        });
-      } else {
-        accOutputs.push({
-          name: item.name ?? "",
-          indexed: item.indexed ?? null,
-          type: item.type,  
-        });
-      }
+    const [inputs, outputs] = functionContract.params.reduce(
+      ([accInputs, accOutputs], item) => {
+        if (item.input) {
+          accInputs.push({
+            name: item.name ?? "",
+            indexed: item.indexed ?? null,
+            type: item.type,
+          });
+        } else {
+          accOutputs.push({
+            name: item.name ?? "",
+            indexed: item.indexed ?? null,
+            type: item.type,
+          });
+        }
 
-      return [accInputs, accOutputs];
-    }, [[], []] as [Param[], Param[]])
+        return [accInputs, accOutputs];
+      },
+      [[], []] as [Param[], Param[]]
+    );
 
     const abi = abiConverter.parseFromParams({
       functionName,
