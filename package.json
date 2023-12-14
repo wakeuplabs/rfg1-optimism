@@ -11,7 +11,7 @@
     "postinstall": "tsc",
     "build": "rm -rf build/ && prettier --write src/ && tsc",
     "migrate": "prisma migrate deploy",
-    "deploy": "npm i && npm run build && npm run migrate && npm start",
+    "deploy": "npm i --omit=dev && npm run build && npm run migrate && npm start",
     "all": "npm run build && npm run test"
   },
   "dependencies": {
