@@ -9,7 +9,7 @@
     "start": "node build/swagger.js",
     "test": "mocha --require ts-node/register '__tests__/**/*.test.ts' --timeout 60000 --exit",
     "postinstall": "tsc",
-    "build": "rm -rf build/ && prettier --write src/ && tsc && node build/swagger.js",
+    "build": "rm -rf build/ && prettier --write src/ && tsc",
     "migrate": "prisma migrate deploy",
     "deploy": "npm i && npm run build && npm run migrate && npm start",
     "all": "npm run build && npm run test"
