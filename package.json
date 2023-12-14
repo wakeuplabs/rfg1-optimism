@@ -8,10 +8,9 @@
     "dev": "nodemon swagger.ts --ignore 'swagger.json'",
     "start": "node build/swagger.js",
     "test": "mocha --require ts-node/register '__tests__/**/*.test.ts' --timeout 60000 --exit",
-    "postinstall": "tsc",
-    "build": "rm -rf build/ && prettier --write src/ && tsc",
+    "deploy": "npm i && npm run build && npm start",
+    "build": "rm -rf build/ && tsc",
     "migrate": "prisma migrate deploy",
-    "deploy": "npm i --omit=dev && npm run build && npm run migrate && npm start",
     "all": "npm run build && npm run test"
   },
   "dependencies": {
