@@ -1,6 +1,6 @@
 import supertest from "supertest";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const app = require("../src/server");
+const app = require("../server");
  
 class Server {
   static server: any = null;

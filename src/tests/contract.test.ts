@@ -1,5 +1,5 @@
 import { expect, request } from "./config";
-import functionService from '../src/services/function';
+import functionService from '../services/function';
 import Sinon from "sinon";
 
 Sinon.stub(functionService, 'saveFunction').returns(Promise.resolve());

@@ -2,8 +2,8 @@
 import { expect, request } from "./config";
 import sinon from "sinon";
 
-import contractService from "../src/services/contract";
-import functionService from "../src/services/function";
+import contractService from "../services/contract";
+import functionService from "../services/function";
 import { account, contractAddress, contractFound, functionFound } from "./contract.mother";
 
 describe("Query Known ABI", () => {
