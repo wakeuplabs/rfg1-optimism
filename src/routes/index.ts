@@ -5,7 +5,7 @@ import walletController from "../controllers/wallet";
 import contractController from "../controllers/contract";
 
 import swaggerUi from "swagger-ui-express";
-const swaggerDocument = require("../../swagger.json");
+import swaggerDocument from "../../swagger.json";
 
 const router = express.Router();
 
