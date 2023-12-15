@@ -5,7 +5,7 @@ import walletController from "../controllers/wallet";
 import contractController from "../controllers/contract";
 
 import swaggerUi from "swagger-ui-express";
-const swaggerDocument = require("../../swagger.json");
+import swaggerDocument from "../../swagger.json";
 
 const router = express.Router();
 
@@ -28,5 +28,6 @@ router.get("/:address/balance/date/:date", walletController.getBalanceAtDate);
 // === Smart Contract ===
 router.put("/:address/query", contractController.queryContract);
 router.put("/:address/queryKnownABI", contractController.queryKnownABI);
+router.get("/:address/functionsKnownABI", contractController.getFunctionsKnownABI);
 
 export = router;

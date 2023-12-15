@@ -30,6 +30,19 @@ const getFunctionByName = async (
   });
 };
 
+const getFunctions = async (
+  contractAddress: string,
+) => {
+  return await prisma.function.findFirst({
+    where: {
+      contractId: contractAddress,
+    },
+    include: {
+      params: true,
+    },
+  });
+};
+
 const saveFunction = async (
   contractAddress: string,
   abiFunction: AbiLine,
@@ -81,4 +94,4 @@ const getAbiFunctionParams = (abiFunction: AbiLine) => {
     .concat(abiFunction.outputs.map((i) => toDataType(i, false)));
 };
 
-export default { saveFunction, getFunctionByName, createFunction };
+export default { saveFunction, getFunctionByName, getFunctions, createFunction };
