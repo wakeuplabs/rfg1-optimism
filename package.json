@@ -6,7 +6,7 @@
   },
   "scripts": {
     "dev": "nodemon swagger.ts --ignore 'swagger.json'",
-    "start": "npm run build && node build/swagger.json",
+    "start": "npm run build && node build/swagger.js",
     "test": "mocha --require ts-node/register 'src/tests/**/*.test.ts' --timeout 60000 --exit",
     "deploy": "npm i && npm run build && npm start",
     "build": "npm i && rm -rf build/ && tsc",
