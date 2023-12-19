@@ -9,6 +9,7 @@ import contractProvider from "../../services/contractProvider";
 // Helpers
 import { getBlockTagForDate } from "../../helpers/blocktag";
 import { abiConverter } from "../../helpers/abiConverter";
+import { parseResponse } from "../../helpers/ethers";
 
 // Models
 import { Param } from "../../models/param";
@@ -145,7 +146,8 @@ const queryKnownABI = async (
 
     await functionService.saveFunction(address, abiFunction, hash);
 
-    res.status(200).json({ response: response.toString() });
+
+    res.status(200).json({ response: parseResponse(response) });
   } catch (error) {
     const message = await errorLogger((req as any).context, error);
     res.status(400).json({ message: message });
