@@ -16,6 +16,7 @@ import contractProvider from "../../services/contractProvider";
 // Helpers
 import { abiConverter } from "../../helpers/abiConverter";
 import { getBlockTagForDate } from "../../helpers/blocktag";
+import { parseResponse } from "../../helpers/ethers";
 
 // Controllers
 import { errorLogger } from "../../controllers/errorLog";
@@ -125,7 +126,7 @@ const queryContract = async (
 
     await functionService.saveFunction(address, abiFunction, hash);
 
-    res.status(200).json({ response: response.toString() });
+    res.status(200).json({ response: parseResponse(response) });
   } catch (error) {
     returnError(res, (error as CustomError).message);
     errorLogger((req as any).context, error);
