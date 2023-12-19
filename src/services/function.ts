@@ -33,7 +33,7 @@ const getFunctionByName = async (
 const getFunctions = async (
   contractAddress: string,
 ) => {
-  return await prisma.function.findFirst({
+  return await prisma.function.findMany({
     where: {
       contractId: contractAddress,
     },

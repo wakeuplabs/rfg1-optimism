@@ -4,8 +4,50 @@ import { NextFunction, Request, Response } from "express";
 import functionService from "../../services/function";
 import contractService from "../../services/contract";
 
+// Models
+import { ContractFunction } from "src/models/function";
+import { Param } from "src/models/param";
+
 // Controllers
 import { errorLogger } from "../errorLog";
+
+interface ParamResponse {
+  name: string;
+  type: string;
+}
+
+type GetFunctionsKnownABIResponse = {
+  name: string;
+  params: ParamResponse[];
+}[]
+
+const parseFunctions = (input: ContractFunction[]): GetFunctionsKnownABIResponse => {
+  const result = input.map((fn) => ({
+    name: fn.name,
+    params: fn.params.reduce((acc: ParamResponse[], current: Param) => {
+      if (current.input) {
+        acc.push({
+          name: current.name,
+          type: current.type,
+        })
+      }
+
+      return acc;
+    },[] as ParamResponse[]),
+    outputs: fn.params.reduce((acc: ParamResponse[], current: Param) => {
+      if (!current.input) {
+        acc.push({
+          name: current.name,
+          type: current.type,
+        })
+      }
+
+      return acc;
+    },[] as ParamResponse[])
+  }));
+
+  return result;
+}
 
 const getFunctionsKnownABI = async (
   req: Request,
@@ -29,11 +71,9 @@ const getFunctionsKnownABI = async (
   */
   try {
     const address = req.params.address as string;
-    console.log({ address })
 
     // Check contract is known
     const contract = await contractService.getContract(address);
-    console.log({ contract })
     if (!contract) {
       throw new Error("Contract unknown");
     }
@@ -42,10 +82,11 @@ const getFunctionsKnownABI = async (
       address,
     );
 
-    res.status(200).json({ response });
+    const responseParsed = parseFunctions(response as unknown as ContractFunction[])
+
+    res.status(200).json(responseParsed);
   } catch (error) {
     const message = await errorLogger((req as any).context, error);
-    console.log({ message });
     res.status(400).json({ message: message });
     next(error);
   }

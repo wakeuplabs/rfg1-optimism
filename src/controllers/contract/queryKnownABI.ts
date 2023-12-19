@@ -99,12 +99,14 @@ const queryKnownABI = async (
             name: item.name ?? "",
             indexed: item.indexed ?? null,
             type: item.type,
+            input: true,
           });
         } else {
           accOutputs.push({
             name: item.name ?? "",
             indexed: item.indexed ?? null,
             type: item.type,
+            input: false,
           });
         }
 
@@ -146,7 +148,6 @@ const queryKnownABI = async (
     res.status(200).json({ response: response.toString() });
   } catch (error) {
     const message = await errorLogger((req as any).context, error);
-    console.log({ message });
     res.status(400).json({ message: message });
     next(error);
   }
