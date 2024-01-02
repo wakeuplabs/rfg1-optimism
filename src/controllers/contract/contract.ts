@@ -8,6 +8,7 @@ import {
   UnprocessedAbi,
 } from "../../models/contract";
 import { CustomError } from "../../models/error";
+import { getNetwork, Network } from "../../models/network";
 
 // Services
 import functionService from "../../services/function";
@@ -28,6 +29,7 @@ interface QueryContractInput {
   params: Record<string, string>;
   blockTag?: number;
   blockDate?: string;
+  network: Network;
 }
 
 const parseInput = (
@@ -43,6 +45,7 @@ const parseInput = (
   const paramsParsed = (body.params as Record<string, any> | undefined) || {};
   const blockTag = body.blockTag ?? undefined;
   const blockDate = body.blockDate as string | undefined;
+  const network = getNetwork(body.network as string);
 
   // Check if all fields are present
   const abiIsArray = Array.isArray(unprocessedAbi);
@@ -63,6 +66,7 @@ const parseInput = (
     params: paramsParsed,
     blockTag: blockTag === undefined ? undefined : +blockTag,
     blockDate,
+    network,
   };
 };
 
@@ -96,6 +100,7 @@ const queryContract = async (
       params,
       blockTag,
       blockDate,
+      network,
     } = parseInput(req.params, req.body);
 
     // Convert ABI to JSON format
@@ -109,9 +114,10 @@ const queryContract = async (
       params
     );
 
-    const blockTagForDate = await getBlockTagForDate(blockDate);
+    const blockTagForDate = await getBlockTagForDate(blockDate, network);
 
-    const response = await contractProvider.call({
+    const provider = contractProvider.getInstance(network);
+    const response = await contractProvider.call(provider, {
       address,
       abi,
       functionName,
@@ -124,7 +130,7 @@ const queryContract = async (
       functionName + abiFunction.inputs.map((i) => i.type + i.name)
     );
 
-    await functionService.saveFunction(address, abiFunction, hash);
+    await functionService.saveFunction(address, abiFunction, hash, network);
 
     res.status(200).json({ response: parseResponse(response) });
   } catch (error) {

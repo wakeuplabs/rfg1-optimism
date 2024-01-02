@@ -1,6 +1,7 @@
 import { ethers, TransactionRequest } from "ethers";
 import { AbiLine } from "../models/contract";
-import { provider } from "../utils";
+import { Network } from "../models/network";
+import { config } from "../config";
 
 interface CallProps {
   address: string;
@@ -10,7 +11,15 @@ interface CallProps {
   blockTag?: number;
 }
 
-const call = async ({
+const getInstance = (network: Network) => {
+  if (network === Network.TESTNET) {
+    return new ethers.JsonRpcProvider(config.rpc.testnet);
+  }
+
+  return new ethers.JsonRpcProvider(config.rpc.mainnet);
+} 
+
+const call = async (provider: ethers.JsonRpcProvider, {
   address,
   blockTag,
   functionName,
@@ -45,6 +54,7 @@ const call = async ({
 
 const contractProvider = {
   call,
+  getInstance,
 };
 
 export default contractProvider;

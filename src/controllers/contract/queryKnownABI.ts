@@ -13,6 +13,7 @@ import { parseResponse } from "../../helpers/ethers";
 
 // Models
 import { Param } from "../../models/param";
+import { Network, getNetwork } from "../../models/network";
 
 // Controllers
 import { errorLogger } from "../../controllers/errorLog";
@@ -23,6 +24,7 @@ interface QueryKnownABIInput {
   params: Record<string, string>;
   blockTag?: number;
   blockDate?: string;
+  network: Network;
 }
 
 const parseInput = (
@@ -35,6 +37,7 @@ const parseInput = (
   const paramsParsed = (body.params as Record<string, any> | undefined) || {};
   const blockTag = body.blockTag ?? undefined;
   const blockDate = body.blockDate as string | undefined;
+  const network = getNetwork(body.network as string);
 
   // Check if all fields are present
   if (functionName === undefined || functionName === "")
@@ -50,6 +53,7 @@ const parseInput = (
     params: paramsParsed,
     blockTag: blockTag === undefined ? undefined : +blockTag,
     blockDate,
+    network,
   };
 };
 
@@ -75,7 +79,7 @@ const queryKnownABI = async (
   }
   */
   try {
-    const { address, functionName, params, blockTag, blockDate } = parseInput(
+    const { address, functionName, params, blockTag, blockDate, network } = parseInput(
       req.params,
       req.body
     );
@@ -129,9 +133,10 @@ const queryKnownABI = async (
       params
     );
 
-    const blockTagForDate = await getBlockTagForDate(blockDate);
+    const blockTagForDate = await getBlockTagForDate(blockDate, network);
 
-    const response = await contractProvider.call({
+    const provider = contractProvider.getInstance(network);
+    const response = await contractProvider.call(provider, {
       address,
       abi,
       functionName,
@@ -144,7 +149,7 @@ const queryKnownABI = async (
       functionName + abiFunction.inputs.map((i) => i.type + i.name)
     );
 
-    await functionService.saveFunction(address, abiFunction, hash);
+    await functionService.saveFunction(address, abiFunction, hash, network);
 
 
     res.status(200).json({ response: parseResponse(response) });

@@ -2,6 +2,7 @@ import { expect, request } from "./config";
 import functionService from '../services/function';
 import Sinon from "sinon";
 import { describe, it } from "mocha";
+import { Network } from "../models/network";
 
 Sinon.stub(functionService, 'saveFunction').returns(Promise.resolve());
 
@@ -13,37 +14,60 @@ describe("Contract", () => {
 
     describe("Error cases", () => {
       it("Should respond with 400 when no ABI", async () => {
-        const body = { function: "name" };
+        const body = { function: "name", network: Network.TESTNET };
         const response = await request.put(`/${contractAddress}/query`).send(body);
         expect(response.statusCode).to.be.equal(400);
         expect(response.body.message).to.be.equal("abi must be specified")
       });
-      it("Should respond with 400 when no functionName", async () => {
+      it("Should respond with 400 when no network", async () => {
         const body = { abi: ["function name() view returns (string)"] };
+        const response = await request.put(`/${contractAddress}/query`).send(body);
+        expect(response.statusCode).to.be.equal(400);
+        expect(response.body.message).to.be.equal("Network INVALID: undefined");
+      });
+      it("Should respond with 400 when no functionName", async () => {
+        const body = { network: Network.TESTNET, abi: ["function name() view returns (string)"] };
         const response = await request.put(`/${contractAddress}/query`).send(body);
         expect(response.statusCode).to.be.equal(400);
         expect(response.body.message).to.be.equal("function must be specified");
       });
       it("Should respond with 400 with invalid date", async () => {
-        const body = { function: "name", abi: ["function name() view returns (string)"], blockDate: "2023-30-30" };
+        const body = {
+          network: Network.TESTNET,
+          function: "name",
+          abi: ["function name() view returns (string)"],
+          blockDate: "2023-30-30"
+        };
         const response = await request.put(`/${contractAddress}/query`).send(body);
         expect(response.statusCode).to.be.equal(400);
         expect(response.body.message).to.be.equal("Date is not valid");
       });
       it("Should respond with 400 when selected function is not on ABI", async () => {
-        const body = { function: "sum", abi: ["function name() view returns (string)"] };
+        const body = {
+          network: Network.TESTNET,
+          function: "sum",
+          abi: ["function name() view returns (string)"]
+        };
         const response = await request.put(`/${contractAddress}/query`).send(body);
         expect(response.statusCode).to.be.equal(400);
         expect(response.body.message).to.be.equal("Selected function not in ABI");
       });
       it("Should respond with 400 when selected function is not a view function", async () => {
-        const body = { function: "sum", abi: ["function sum(uint32 a, uint32 b) returns (string)"] };
+        const body = {
+          network: Network.TESTNET,
+          function: "sum",
+          abi: ["function sum(uint32 a, uint32 b) returns (string)"]
+        };
         const response = await request.put(`/${contractAddress}/query`).send(body);
         expect(response.statusCode).to.be.equal(400);
         expect(response.body.message).to.be.equal("Only 'view' functions are supported")
       });
       it("Should respond with 400 when missing params", async () => {
-        const body = { function: "balanceOf", abi: ["function balanceOf(address account) view returns (string)"] };
+        const body = {
+          network: Network.TESTNET,
+          function: "balanceOf",
+          abi: ["function balanceOf(address account) view returns (string)"]
+        };
         const response = await request.put(`/${contractAddress}/query`).send(body);
         expect(response.statusCode).to.be.equal(400);
         expect(response.body.message).to.be.equal("Missing params: [account]");
@@ -51,6 +75,7 @@ describe("Contract", () => {
 
       it("Should alter contract responded with 0x when sending blockTag before creation", async () => {
         const body = {
+          network: Network.TESTNET,
           function: "balanceOf",
           abi: ["function balanceOf(address account) view returns (string)"],
           params: {
@@ -68,6 +93,7 @@ describe("Contract", () => {
     describe("Happy Path", () => {
       it("Should return correct value", async () => {
         const body = {
+          network: Network.TESTNET,
           function: "balanceOf",
           abi: ["function balanceOf(address account) view returns (uint256)"],
           params: {
@@ -77,11 +103,12 @@ describe("Contract", () => {
         };
         const response = await request.put(`/${contractAddress}/query`).send(body);
         expect(response.statusCode).to.be.equal(200);
-        expect(response.body.response).to.be.equal("10000000000000000000000");
+        expect(response.body.response[0]).to.be.equal("10000000000000000000000");
       });
 
       it("Should return correct value with JSON Abi", async () => {
         const body = {
+          network: Network.TESTNET,
           function: "balanceOf",
           abi: {
             "inputs": [
@@ -109,11 +136,12 @@ describe("Contract", () => {
         };
         const response = await request.put(`/${contractAddress}/query`).send(body);
         expect(response.statusCode).to.be.equal(200);
-        expect(response.body.response).to.be.equal("10000000000000000000000");
+        expect(response.body.response[0]).to.be.equal("10000000000000000000000");
       });
 
       it("Should return correct value when sending blockDate", async () => {
         const body = {
+          network: Network.TESTNET,
           function: "balanceOf",
           abi: ["function balanceOf(address account) view returns (uint256)"],
           params: {
@@ -123,7 +151,7 @@ describe("Contract", () => {
         };
         const response = await request.put(`/${contractAddress}/query`).send(body);
         expect(response.statusCode).to.be.equal(200);
-        expect(response.body.response).to.be.equal("10000000000000000000000");
+        expect(response.body.response[0]).to.be.equal("10000000000000000000000");
       });
     })
   })

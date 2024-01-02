@@ -5,8 +5,8 @@ import functionService from "../../services/function";
 import contractService from "../../services/contract";
 
 // Models
-import { ContractFunction } from "src/models/function";
-import { Param } from "src/models/param";
+import { ContractFunction } from "../../models/function";
+import { Param } from "../../models/param";
 
 // Controllers
 import { errorLogger } from "../errorLog";
