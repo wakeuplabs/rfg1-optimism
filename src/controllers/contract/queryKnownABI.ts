@@ -13,7 +13,7 @@ import { parseResponse } from "../../helpers/ethers";
 
 // Models
 import { Param } from "../../models/param";
-import { Network, getNetwork } from "../../models/network";
+import { Chain, getChain } from "../../models/chain";
 
 // Controllers
 import { errorLogger } from "../../controllers/errorLog";
@@ -24,7 +24,7 @@ interface QueryKnownABIInput {
   params: Record<string, string>;
   blockTag?: number;
   blockDate?: string;
-  network: Network;
+  blockchain: Chain;
 }
 
 const parseInput = (
@@ -37,7 +37,7 @@ const parseInput = (
   const paramsParsed = (body.params as Record<string, any> | undefined) || {};
   const blockTag = body.blockTag ?? undefined;
   const blockDate = body.blockDate as string | undefined;
-  const network = getNetwork(body.network as string);
+  const blockchain = getChain(body.blockchain as string);
 
   // Check if all fields are present
   if (functionName === undefined || functionName === "")
@@ -53,7 +53,7 @@ const parseInput = (
     params: paramsParsed,
     blockTag: blockTag === undefined ? undefined : +blockTag,
     blockDate,
-    network,
+    blockchain,
   };
 };
 
@@ -79,7 +79,7 @@ const queryKnownABI = async (
   }
   */
   try {
-    const { address, functionName, params, blockTag, blockDate, network } = parseInput(
+    const { address, functionName, params, blockTag, blockDate, blockchain } = parseInput(
       req.params,
       req.body
     );
@@ -133,9 +133,9 @@ const queryKnownABI = async (
       params
     );
 
-    const blockTagForDate = await getBlockTagForDate(blockDate, network);
+    const blockTagForDate = await getBlockTagForDate(blockDate, blockchain);
 
-    const provider = contractProvider.getInstance(network);
+    const provider = contractProvider.getInstance(blockchain);
     const response = await contractProvider.call(provider, {
       address,
       abi,
@@ -149,7 +149,7 @@ const queryKnownABI = async (
       functionName + abiFunction.inputs.map((i) => i.type + i.name)
     );
 
-    await functionService.saveFunction(address, abiFunction, hash, network);
+    await functionService.saveFunction(address, abiFunction, hash, blockchain);
 
 
     res.status(200).json({ response: parseResponse(response) });

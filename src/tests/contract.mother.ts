@@ -1,11 +1,11 @@
-import { Network } from "../models/network"
+import { Chain } from "../models/chain"
 
 export const contractAddress = "0x50e67cac82fA0e67F456B6536ea609103DfDa98B"
 export const account = "0x5Dda4e44d1C4fAb2704A9557509Db94EB4c27CD2"
 
 export const contractFound = {
   address:  contractAddress,
-  network: Network.TESTNET,
+  blockchain: Chain.Optimism_Sequoia,
   isMostPopular: false,
   createdAt: new Date(),
   updatedAt: new Date(),

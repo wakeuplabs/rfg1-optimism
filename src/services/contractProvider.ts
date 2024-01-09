@@ -1,6 +1,6 @@
 import { ethers, TransactionRequest } from "ethers";
 import { AbiLine } from "../models/contract";
-import { Network } from "../models/network";
+import { Chain } from "../models/chain";
 import { config } from "../config";
 
 interface CallProps {
@@ -11,8 +11,8 @@ interface CallProps {
   blockTag?: number;
 }
 
-const getInstance = (network: Network) => {
-  if (network === Network.TESTNET) {
+const getInstance = (blockchain: Chain) => {
+  if (blockchain === Chain.Optimism_Sequoia) {
     return new ethers.JsonRpcProvider(config.rpc.testnet);
   }
 

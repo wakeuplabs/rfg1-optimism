@@ -1,6 +1,6 @@
 // Models
 import { AbiInput, AbiLine } from "../models/contract";
-import { Network } from "../models/network";
+import { Chain } from "../models/chain";
 
 // Utils
 import { prisma } from "../utils";
@@ -52,11 +52,11 @@ const saveFunction = async (
   contractAddress: string,
   abiFunction: AbiLine,
   hash: string,
-  network: Network,
+  blockchain: Chain,
 ) => {
   let contract = await contractService.getContract(contractAddress);
   if (contract === null) {
-    contract = await contractService.createContract(contractAddress, network);
+    contract = await contractService.createContract(contractAddress, blockchain);
   }
 
   const existingFunction = await getFunctionByHash(contractAddress, hash);

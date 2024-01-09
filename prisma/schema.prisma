@@ -7,9 +7,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Network {
-  TESTNET
-  MAINNET
+enum Chain {
+  Optimism_Goerli
+  Optimism_Sequoia
+  Optimism
 }
 
 model Contract {
@@ -17,7 +18,7 @@ model Contract {
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @default(now())
   isMostPopular Boolean    @default(false)
-  network       Network    @default(MAINNET)
+  blockchain    Chain      @default(Optimism)
   functions     Function[]
 }
 

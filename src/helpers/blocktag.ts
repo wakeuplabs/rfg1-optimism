@@ -1,5 +1,5 @@
 // Models
-import { Network, getNetwork } from "../models/network";
+import { Chain, getChain } from "../models/chain";
 
 // Services
 import contractProvider from "../services/contractProvider";
@@ -7,15 +7,15 @@ import { daterProvider } from "../services/daterProvider";
 
 export const getBlockTagForDate = async (
   date?: string,
-  networkInput?: Network,
+  blockchainInput?: Chain,
 ): Promise<number | undefined> => {
-  if (!date || !networkInput) {
+  if (!date || !blockchainInput) {
     return undefined;
   }
 
-  const network = getNetwork(networkInput as string);
+  const blockchain = getChain(blockchainInput as string);
 
-  const provider = contractProvider.getInstance(network)
+  const provider = contractProvider.getInstance(blockchain)
   const dater = daterProvider.getDater(provider)
 
   const block = await dater.getDate(date, true, false);

@@ -38,6 +38,13 @@
               "type": "string"
             },
             "description": "Address to search"
+          },
+          {
+            "name": "network",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -80,6 +87,13 @@
               "type": "string"
             },
             "description": "Block to search"
+          },
+          {
+            "name": "network",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -122,6 +136,13 @@
               "type": "string"
             },
             "description": "Date to search (YYYY-MM-DDThh:mm:ss)"
+          },
+          {
+            "name": "network",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
