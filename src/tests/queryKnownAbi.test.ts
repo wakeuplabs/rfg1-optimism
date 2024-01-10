@@ -15,14 +15,14 @@ describe("Query Known ABI", () => {
 
     describe("Error cases", () => {
       it("Should respond with 400 when no functionName", async () => {
-        const body = { blockchain: Chain.Optimism_Sequoia, abi: ["function name() view returns (string)"] };
+        const body = { blockchain: Chain.Optimism_Sepolia, abi: ["function name() view returns (string)"] };
         const response = await request.put(url).send(body);
         expect(response.statusCode).to.be.equal(400);
         expect(response.body.message).to.be.equal("function must be specified");
       });
       it("Should respond with 400 with invalid date", async () => {
         const body = {
-          blockchain: Chain.Optimism_Sequoia,
+          blockchain: Chain.Optimism_Sepolia,
           function: "name",
           abi: ["function name() view returns (string)"],
           blockDate: "2023-30-30",
@@ -39,7 +39,7 @@ describe("Query Known ABI", () => {
       });
       it("Should respond with 400 when missing params", async () => {
         const body = {
-          blockchain: Chain.Optimism_Sequoia,
+          blockchain: Chain.Optimism_Sepolia,
           function: "balanceOf",
           abi: ["function balanceOf(address account) view returns (string)"]
         };
@@ -49,7 +49,7 @@ describe("Query Known ABI", () => {
       });
       it("Should respond with 400 when date and block are at the defined same time", async () => {
         const body = {
-          blockchain: Chain.Optimism_Sequoia,
+          blockchain: Chain.Optimism_Sepolia,
           blockDate: "2023-3-3",
           blockTag: 123,
           function: "balanceOf",
@@ -64,7 +64,7 @@ describe("Query Known ABI", () => {
         .returns(Promise.resolve(null));
 
         const body = {
-          blockchain: Chain.Optimism_Sequoia,
+          blockchain: Chain.Optimism_Sepolia,
           blockDate: "2023-3-3",
           function: "balanceOf",
           abi: ["function balanceOf(address account) view returns (string)"]
@@ -80,7 +80,7 @@ describe("Query Known ABI", () => {
         const getFunctionNotFound = sinon.stub(functionService, 'getFunctionByName').returns(Promise.resolve(null));
 
         const body = {
-          blockchain: Chain.Optimism_Sequoia,
+          blockchain: Chain.Optimism_Sepolia,
           blockDate: "2023-3-3",
           function: "balanceOf",
           abi: ["function balanceOf(address account) view returns (string)"]
@@ -100,7 +100,7 @@ describe("Query Known ABI", () => {
         const getFunctionNotFound = sinon.stub(functionService, 'getFunctionByName').returns(Promise.resolve(functionFound as any));
 
         const body = {
-          blockchain: Chain.Optimism_Sequoia,
+          blockchain: Chain.Optimism_Sepolia,
           function: "balanceOf",
           params: {
             "account": account
@@ -119,7 +119,7 @@ describe("Query Known ABI", () => {
         const getFunctionNotFound = sinon.stub(functionService, 'getFunctionByName').returns(Promise.resolve(functionFound as any));
 
         const body = {
-          blockchain: Chain.Optimism_Sequoia,
+          blockchain: Chain.Optimism_Sepolia,
           function: "balanceOf",
           params: {
             "account": account

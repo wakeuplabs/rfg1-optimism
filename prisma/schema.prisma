@@ -9,7 +9,7 @@ datasource db {
 
 enum Chain {
   Optimism_Goerli
-  Optimism_Sequoia
+  Optimism_Sepolia
   Optimism
 }
 

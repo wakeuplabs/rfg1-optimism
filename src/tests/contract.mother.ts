@@ -5,7 +5,7 @@ export const account = "0x5Dda4e44d1C4fAb2704A9557509Db94EB4c27CD2"
 
 export const contractFound = {
   address:  contractAddress,
-  blockchain: Chain.Optimism_Sequoia,
+  blockchain: Chain.Optimism_Sepolia,
   isMostPopular: false,
   createdAt: new Date(),
   updatedAt: new Date(),

@@ -1,6 +1,6 @@
 export enum Chain {
   Optimism_Goerli = "Optimism_Goerli",
-  Optimism_Sequoia = "Optimism_Sequoia",
+  Optimism_Sepolia = "Optimism_Sepolia",
   Optimism = "Optimism",
 }
 

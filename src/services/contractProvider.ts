@@ -12,7 +12,7 @@ interface CallProps {
 }
 
 const getInstance = (blockchain: Chain) => {
-  if (blockchain === Chain.Optimism_Sequoia) {
+  if (blockchain === Chain.Optimism_Sepolia) {
     return new ethers.JsonRpcProvider(config.rpc.testnet);
   }
 
