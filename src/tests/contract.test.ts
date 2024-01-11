@@ -2,7 +2,7 @@ import { expect, request } from "./config";
 import functionService from '../services/function';
 import Sinon from "sinon";
 import { describe, it } from "mocha";
-import { Network } from "../models/network";
+import { Chain } from "../models/chain";
 
 Sinon.stub(functionService, 'saveFunction').returns(Promise.resolve());
 
@@ -14,7 +14,7 @@ describe("Contract", () => {
 
     describe("Error cases", () => {
       it("Should respond with 400 when no ABI", async () => {
-        const body = { function: "name", network: Network.TESTNET };
+        const body = { function: "name", blockchain: Chain.Optimism_Sepolia };
         const response = await request.put(`/${contractAddress}/query`).send(body);
         expect(response.statusCode).to.be.equal(400);
         expect(response.body.message).to.be.equal("abi must be specified")
@@ -26,14 +26,14 @@ describe("Contract", () => {
         expect(response.body.message).to.be.equal("Network INVALID: undefined");
       });
       it("Should respond with 400 when no functionName", async () => {
-        const body = { network: Network.TESTNET, abi: ["function name() view returns (string)"] };
+        const body = { blockchain: Chain.Optimism_Sepolia, abi: ["function name() view returns (string)"] };
         const response = await request.put(`/${contractAddress}/query`).send(body);
         expect(response.statusCode).to.be.equal(400);
         expect(response.body.message).to.be.equal("function must be specified");
       });
       it("Should respond with 400 with invalid date", async () => {
         const body = {
-          network: Network.TESTNET,
+          blockchain: Chain.Optimism_Sepolia,
           function: "name",
           abi: ["function name() view returns (string)"],
           blockDate: "2023-30-30"
@@ -44,7 +44,7 @@ describe("Contract", () => {
       });
       it("Should respond with 400 when selected function is not on ABI", async () => {
         const body = {
-          network: Network.TESTNET,
+          blockchain: Chain.Optimism_Sepolia,
           function: "sum",
           abi: ["function name() view returns (string)"]
         };
@@ -54,7 +54,7 @@ describe("Contract", () => {
       });
       it("Should respond with 400 when selected function is not a view function", async () => {
         const body = {
-          network: Network.TESTNET,
+          blockchain: Chain.Optimism_Sepolia,
           function: "sum",
           abi: ["function sum(uint32 a, uint32 b) returns (string)"]
         };
@@ -64,7 +64,7 @@ describe("Contract", () => {
       });
       it("Should respond with 400 when missing params", async () => {
         const body = {
-          network: Network.TESTNET,
+          blockchain: Chain.Optimism_Sepolia,
           function: "balanceOf",
           abi: ["function balanceOf(address account) view returns (string)"]
         };
@@ -75,7 +75,7 @@ describe("Contract", () => {
 
       it("Should alter contract responded with 0x when sending blockTag before creation", async () => {
         const body = {
-          network: Network.TESTNET,
+          blockchain: Chain.Optimism_Sepolia,
           function: "balanceOf",
           abi: ["function balanceOf(address account) view returns (string)"],
           params: {
@@ -93,7 +93,7 @@ describe("Contract", () => {
     describe("Happy Path", () => {
       it("Should return correct value", async () => {
         const body = {
-          network: Network.TESTNET,
+          blockchain: Chain.Optimism_Sepolia,
           function: "balanceOf",
           abi: ["function balanceOf(address account) view returns (uint256)"],
           params: {
@@ -108,7 +108,7 @@ describe("Contract", () => {
 
       it("Should return correct value with JSON Abi", async () => {
         const body = {
-          network: Network.TESTNET,
+          blockchain: Chain.Optimism_Sepolia,
           function: "balanceOf",
           abi: {
             "inputs": [
@@ -141,7 +141,7 @@ describe("Contract", () => {
 
       it("Should return correct value when sending blockDate", async () => {
         const body = {
-          network: Network.TESTNET,
+          blockchain: Chain.Optimism_Sepolia,
           function: "balanceOf",
           abi: ["function balanceOf(address account) view returns (uint256)"],
           params: {
