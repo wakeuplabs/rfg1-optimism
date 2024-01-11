@@ -1,9 +1,12 @@
 import { prisma } from "../utils";
 
-const createContract = (contractAddress: string) => {
+import { Chain } from "../models/chain";
+
+const createContract = (contractAddress: string, blockchain: Chain) => {
   return prisma.contract.create({
     data: {
       address: contractAddress,
+      blockchain
     },
   });
 };

@@ -1,6 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import { provider, dater } from "../utils";
+
+// Models
 import { BalanceResponse } from "../models/wallet";
+import { getChain } from "../models/chain";
+
+// Services
+import contractProvider from "../services/contractProvider";
+import { daterProvider } from "../services/daterProvider";
 
 const returnBalance = (res: Response, address: string, balance: bigint) => {
   const balanceResponse: BalanceResponse = {
@@ -29,7 +35,9 @@ const getCurrentBalance = async (
   */
   try {
     const address = req.params.address;
+    const blockchain = getChain(req.query.blockchain as string);
 
+    const provider = contractProvider.getInstance(blockchain);
     const balance: bigint = await provider.getBalance(address);
     returnBalance(res, address, balance);
   } catch (error) {
@@ -64,7 +72,9 @@ const getBalanceAtBlock = async (
   try {
     const address = req.params.address;
     const blockNumber = parseInt(req.params.blockNumber);
+    const blockchain = getChain(req.query.blockchain as string);
 
+    const provider = contractProvider.getInstance(blockchain)
     const balance: bigint = await provider.getBalance(address, blockNumber);
     returnBalance(res, address, balance);
   } catch (error) {
@@ -99,6 +109,10 @@ const getBalanceAtDate = async (
   try {
     const address = req.params.address;
     const date = new Date(req.params.date);
+    const blockchain = getChain(req.query.blockchain as string);
+
+    const provider = contractProvider.getInstance(blockchain)
+    const dater = daterProvider.getDater(provider)
 
     const block: EthDater.BlockResult = await dater.getDate(date, true, false);
 

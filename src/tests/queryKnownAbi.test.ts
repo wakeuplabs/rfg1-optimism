@@ -6,6 +6,7 @@ import contractService from "../services/contract";
 import functionService from "../services/function";
 import { account, contractAddress, contractFound, functionFound } from "./contract.mother";
 import { describe, it } from "mocha";
+import { Chain } from "../models/chain";
 
 describe("Query Known ABI", () => {
   const url = `/${contractAddress}/queryKnownABI`;
@@ -14,28 +15,46 @@ describe("Query Known ABI", () => {
 
     describe("Error cases", () => {
       it("Should respond with 400 when no functionName", async () => {
-        const body = { abi: ["function name() view returns (string)"] };
+        const body = { blockchain: Chain.Optimism_Sepolia, abi: ["function name() view returns (string)"] };
         const response = await request.put(url).send(body);
         expect(response.statusCode).to.be.equal(400);
         expect(response.body.message).to.be.equal("function must be specified");
       });
       it("Should respond with 400 with invalid date", async () => {
-        const body = { function: "name", abi: ["function name() view returns (string)"], blockDate: "2023-30-30" };
+        const body = {
+          blockchain: Chain.Optimism_Sepolia,
+          function: "name",
+          abi: ["function name() view returns (string)"],
+          blockDate: "2023-30-30",
+        };
         const response = await request.put(url).send(body);
         expect(response.statusCode).to.be.equal(400);
         expect(response.body.message).to.be.equal("Date is not valid");
       });
+      it("Should respond with 400 with invalid network", async () => {
+        const body = { function: "name", abi: ["function name() view returns (string)"], blockDate: "2023-30-30" };
+        const response = await request.put(url).send(body);
+        expect(response.statusCode).to.be.equal(400);
+        expect(response.body.message).to.be.equal("Network INVALID: undefined");
+      });
       it("Should respond with 400 when missing params", async () => {
-        const body = { function: "balanceOf", abi: ["function balanceOf(address account) view returns (string)"] };
+        const body = {
+          blockchain: Chain.Optimism_Sepolia,
+          function: "balanceOf",
+          abi: ["function balanceOf(address account) view returns (string)"]
+        };
         const response = await request.put(url).send(body);
         expect(response.statusCode).to.be.equal(400);
         expect(response.body.message).to.be.equal("Missing params: [account]");
       });
       it("Should respond with 400 when date and block are at the defined same time", async () => {
         const body = {
+          blockchain: Chain.Optimism_Sepolia,
           blockDate: "2023-3-3",
           blockTag: 123,
-          function: "balanceOf", abi: ["function balanceOf(address account) view returns (string)"] };
+          function: "balanceOf",
+          abi: ["function balanceOf(address account) view returns (string)"]
+        };
         const response = await request.put(url).send(body);
         expect(response.statusCode).to.be.equal(400);
         expect(response.body.message).to.be.equal("Block tag and block date is not valid at the same time");
@@ -45,6 +64,7 @@ describe("Query Known ABI", () => {
         .returns(Promise.resolve(null));
 
         const body = {
+          blockchain: Chain.Optimism_Sepolia,
           blockDate: "2023-3-3",
           function: "balanceOf",
           abi: ["function balanceOf(address account) view returns (string)"]
@@ -60,6 +80,7 @@ describe("Query Known ABI", () => {
         const getFunctionNotFound = sinon.stub(functionService, 'getFunctionByName').returns(Promise.resolve(null));
 
         const body = {
+          blockchain: Chain.Optimism_Sepolia,
           blockDate: "2023-3-3",
           function: "balanceOf",
           abi: ["function balanceOf(address account) view returns (string)"]
@@ -79,6 +100,7 @@ describe("Query Known ABI", () => {
         const getFunctionNotFound = sinon.stub(functionService, 'getFunctionByName').returns(Promise.resolve(functionFound as any));
 
         const body = {
+          blockchain: Chain.Optimism_Sepolia,
           function: "balanceOf",
           params: {
             "account": account
@@ -87,7 +109,7 @@ describe("Query Known ABI", () => {
         };
         const response = await request.put(url).send(body);
         expect(response.statusCode).to.be.equal(200);
-        expect(response.body.response).to.be.equal("10000000000000000000000");
+        expect(response.body.response[0]).to.be.equal("10000000000000000000000");
 
         getContractMock.restore()
         getFunctionNotFound.restore();
@@ -97,6 +119,7 @@ describe("Query Known ABI", () => {
         const getFunctionNotFound = sinon.stub(functionService, 'getFunctionByName').returns(Promise.resolve(functionFound as any));
 
         const body = {
+          blockchain: Chain.Optimism_Sepolia,
           function: "balanceOf",
           params: {
             "account": account
@@ -105,7 +128,7 @@ describe("Query Known ABI", () => {
         };
         const response = await request.put(url).send(body);
         expect(response.statusCode).to.be.equal(200);
-        expect(response.body.response).to.be.equal("10000000000000000000000");
+        expect(response.body.response[0]).to.be.equal("10000000000000000000000");
 
         getContractMock.restore()
         getFunctionNotFound.restore();
