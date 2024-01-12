@@ -6,7 +6,7 @@ export enum Chain {
 
 export const getChain = (chain?: string): Chain => {
   if (!chain || !Object.values(Chain).includes(chain as Chain)) {
-    throw new Error("Network INVALID: " + chain);
+    throw new Error("Blockchain INVALID: " + chain);
   }
 
   return chain as Chain;
