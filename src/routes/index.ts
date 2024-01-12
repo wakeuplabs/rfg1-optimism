@@ -4,17 +4,9 @@ import infoController from "../controllers/info";
 import walletController from "../controllers/wallet";
 import contractController from "../controllers/contract";
 
-import swaggerUi from "swagger-ui-express";
-import swaggerDocument from "../../swagger.json";
-
 const router = express.Router();
 
-// === Swagger ===
-router.use("/api-docs", swaggerUi.serve);
-router.get("/api-docs", swaggerUi.setup(swaggerDocument));
-
 // === Info ===
-router.get("/", infoController.redirectRoot);
 router.get("/info", infoController.getInfo);
 
 // === Wallet ===
