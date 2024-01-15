@@ -6,6 +6,57 @@ Welcome to WakeUp Labs' implementation of RFG1 from the Optimism Grants Council!
 
 Learn more about **WakeUp Labs** [here](https://www.wakeuplabs.io/) and explore our implementation of the Optimism **Request For Grants #1** [RFG1](https://app.charmverse.io/op-grants/page-8928491436774362) from the Optimism Grants Council. Our service is fully open-source with an MIT license.
 
+## How to run
+
+### Local Setup Guide
+
+### Prerequisites
+- Node.js installed on your machine
+- Git installed for cloning the repository
+- PostgreSQL installed and running or any database deployed
+
+### Steps to Run Locally
+  1. Clone the repository:
+```bash
+ git clone https://github.com/WakeUpLabs/RFG1-Optimism-Project.git
+```
+
+  2. Complete the environment variables in a ```.env``` file
+
+  ```
+    URL=
+    PORT=
+    RPC_TESTNET_URL=
+    RPC_MAINNET_URL=
+    DATABASE_URL=
+  ```
+  - URL: The base URL for the application. If you want to run it locally, it will be set to http://localhost.
+  - PORT: Specifies the port number on which the server will listen for incoming requests.
+  - RPC_URL: Refers to the Remote Procedure Call (RPC) endpoint for connecting to the Optimism blockchain. This variable is crucial for interacting with the blockchain, fetching data, or executing transactions.
+  - PRIVATE_KEY: Represents the private key used for authentication or signing transactions. Ensure that this key is kept confidential and not shared publicly.
+  - DATABASE_URL: Specifies the URL for connecting to the PostgreSQL database.
+
+3. Run database migrations:
+```bash
+ npm run migrate
+```
+4. Install dependencies:
+
+```bash
+ npm install
+``` 
+
+5. Start the local server:
+
+```bash
+ npm run start
+``` 
+
+
+
+
+
+
 ## Our architecture
 
 Our service is purpose-built for effortless integration, streamlined maintenance, and adaptable extensibility with external services. Leveraging AWS infrastructure, we've deployed these services to create a scalable and high-performing solution.
@@ -66,46 +117,3 @@ You can explore our service's capabilities through these demo endpoints:
 #### Execute Known Contract Function
 - **Description:** Execute a function of a known contract.
 - **Demo URL:** [Execute Known Contract Function Demo](rfg1.json/paths/~1{address}~1queryKnownABI/put)
-
-## How to run
-
-### Local Setup Guide
-
-### Prerequisites
-- Node.js installed on your machine
-- Git installed for cloning the repository
-- PostgreSQL installed and running or any database deployed
-
-### Steps to Run Locally
-  1. Clone the repository:
-    ```bash
-    git clone https://github.com/WakeUpLabs/RFG1-Optimism-Project.git
-  2. Complete the environment variables
-
-  ```
-    URL=
-    PORT=
-    RPC_TESTNET_URL=
-    RPC_MAINNET_URL=
-    DATABASE_URL=
-  ```
-  - URL: The base URL for the application. If you want to run it locally, it will be set to http://localhost.
-  - PORT: Specifies the port number on which the server(and swagger) will listen for incoming requests.
-  - RPC_URL: Refers to the Remote Procedure Call (RPC) endpoint for connecting to the Optimism blockchain. This variable is crucial for interacting with the blockchain, fetching data, or executing transactions.
-  - PRIVATE_KEY: Represents the private key used for authentication or signing transactions. Ensure that this key is kept confidential and not shared publicly.
-  - DATABASE_URL: Specifies the URL for connecting to the PostgreSQL database.
-3. Run database migrations:
-```bash
-    npm run migrate
-```
-4. Install dependencies:
-
-```bash
-    npm install
-``` 
-
-5. Start the local server:
-
-```bash
-    npm run start
-``` 
