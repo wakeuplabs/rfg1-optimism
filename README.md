@@ -4,7 +4,7 @@ Welcome to WakeUp Labs' implementation of RFG1 from the Optimism Grants Council!
 
 ## Introduction
 
-Learn more about WakeUp Labs [here](https://www.wakeuplabs.io/) and explore our implementation of Request For Grants #1 ([RFG1](https://app.charmverse.io/op-grants/page-8928491436774362)) from the Optimism Grants Council. Our service is fully open-source with an MIT license.
+Learn more about **WakeUp Labs** [here](https://www.wakeuplabs.io/) and explore our implementation of the Optimism **Request For Grants #1** [RFG1](https://app.charmverse.io/op-grants/page-8928491436774362) from the Optimism Grants Council. Our service is fully open-source with an MIT license.
 
 ## Our architecture
 
