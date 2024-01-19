@@ -59,19 +59,16 @@ Learn more about **WakeUp Labs** [here](https://www.wakeuplabs.io/) and explore 
 
 ## Our architecture
 
-Our service is purpose-built for effortless integration, streamlined maintenance, and adaptable extensibility with external services. Leveraging AWS infrastructure, we've deployed these services to create a scalable and high-performing solution.
+[Complete Here with project architecture diagram]
 
-![image.png](./src/assets/rfg1-architecture.png)
+## Try It Out - Quick Demo
 
-As illustrated in the previous image, we have a dedicated service interfacing with the database. Its main goal is to load a roster of well-known contracts. This approach offers flexibility not only for the current solution but also for future implementations, supporting a custom and different sets of contracts that may pique interest.
+[Input link to demo]
 
-## Try It Out
+## Try It Out - Dedicated Instance
+For your convenience, WakeUp Labs offers an easier solution by providing a deployed version and dedicated instance that is ready to use and seamlessly integrates with your services via REST APIs. To get started, simply log in to the [WakeUp Platform](https://platform.wakeuplabs.io/) and obtain your free apikey.
 
-You can access the source code for this project on our GitHub repository: [WakeUpLabs/RFG1-Optimism-Project](https://github.com/WakeUpLabs/RFG1-Optimism.git). Additionally, we provide a comprehensive step-by-step guide to help you run the code locally or set it up as a service.
-
-For your convenience, WakeUp Labs offers an easier solution by providing a deployed version that is ready to use and seamlessly integrates with your services. To get started, simply log in to our platform and obtain your unique apikey. This streamlined process ensures a quick and efficient integration into your workflow.
-
-### Platform integration
+### Integration via WakeUp Platform REST APIs
 ---
 #### Sign Up & Get Free Api Key
 
@@ -84,11 +81,11 @@ Once you have completed the registration process, go to the API Key section to v
 Copy the generated API key and keep it safe, as it will be your credential for accessing our services 🔐
 
 
-### Demo: Stoplight 
+### API Documentation
 
 ---
 
-You can explore our service's capabilities through these demo endpoints:
+You can explore the service's capabilities through t endpoints:
 
 #### Healthcheck Endpoint
 - **Description:** Check the health status of the service.
@@ -117,3 +114,34 @@ You can explore our service's capabilities through these demo endpoints:
 #### Execute Known Contract Function
 - **Description:** Execute a function of a known contract.
 - **Demo URL:** [Execute Known Contract Function Demo](rfg1.json/paths/~1{address}~1queryKnownABI/put)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+------
+[This seems to apply only to the platform dedicated instance] --> 
+
+[Our service is purpose-built for effortless integration, streamlined maintenance, and adaptable extensibility with external services. Leveraging AWS infrastructure, we've deployed these services to create a scalable and high-performing solution.
+
+![image.png](./src/assets/rfg1-architecture.png)
+
+As illustrated in the previous image, we have a dedicated service interfacing with the database. Its main goal is to load a roster of well-known contracts. This approach offers flexibility not only for the current solution but also for future implementations, supporting a custom and different sets of contracts that may pique interest.]
+
+
+
+---------
+
+
+
+
+
