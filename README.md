@@ -85,35 +85,16 @@ Copy the generated API key and keep it safe, as it will be your credential for a
 
 ---
 
-You can explore the service's capabilities through t endpoints:
+You can explore the service's capabilities through the different endpoints you will find in the [API Docs](https://wakeuplabs.stoplight.io/docs/stoplight-platform/vj8jtm9fbdl0n-retrieve-wallet-balance-at-date)
 
-#### Healthcheck Endpoint
-- **Description:** Check the health status of the service.
-- **Demo URL:** [Healthcheck Endpoint Demo](rfg1.json/paths/~1info/get)
 
-#### Retrieve Wallet Balance
-- **Description:** Retrieve the balance of a wallet.
-- **Demo URL:** [Retrieve Wallet Balance Demo](rfg1.json/paths/~1{address}~1balance/get)
-
-#### Retrieve Wallet Balance at Block
-- **Description:** Get the wallet balance at a specific block.
-- **Demo URL:** [Retrieve Wallet Balance at Block Demo](rfg1.json/paths/~1{address}~1balance~1block~1{blockNumber}/get)
-
-#### Retrieve Wallet Balance at Date
-- **Description:** Fetch the wallet balance at a specific date.
-- **Demo URL:** [Retrieve Wallet Balance at Date Demo](rfg1.json/paths/~1{address}~1balance~1block~1{blockNumber}/get)
-
-#### Get View Functions of Known Contracts
-- **Description:** List view functions of known contracts.
-- **Demo URL:** [View Functions of Known Contracts Demo](rfg1.json/paths/~1{address}~1functionsKnownABI/get)
-
-#### Execute Contract Function
-- **Description:** Execute a contract function.
-- **Demo URL:** [Execute Contract Function Demo](rfg1.json/paths/~1{address}~1query/put)
-
-#### Execute Known Contract Function
-- **Description:** Execute a function of a known contract.
-- **Demo URL:** [Execute Known Contract Function Demo](rfg1.json/paths/~1{address}~1queryKnownABI/put)
+* **Healthcheck Endpoint:** Check the health status of the service.
+* **Retrieve Wallet Balance:** Retrieve the current balance of a wallet.
+* **Retrieve Wallet Balance at Block:** Get the wallet balance at a specific block in the past.
+* **Retrieve Wallet Balance at Date:** Fetch the wallet balance at a specific date in the past.
+* **Execute Contract Function:** Execute a contract ```public view``` function by input of ABI.
+* **Execute Known Contract Function:** Execute a function of a known contract, no ABI input needed.
+* **Get View Functions of Known Contracts:** List ```public view``` functions of known contracts.
 
 
 
@@ -129,6 +110,8 @@ You can explore the service's capabilities through t endpoints:
 
 
 ------
+********[Add TODO for Popular OP Contracts List]********
+------
 [This seems to apply only to the platform dedicated instance] --> 
 
 [Our service is purpose-built for effortless integration, streamlined maintenance, and adaptable extensibility with external services. Leveraging AWS infrastructure, we've deployed these services to create a scalable and high-performing solution.
@@ -140,8 +123,3 @@ As illustrated in the previous image, we have a dedicated service interfacing wi
 
 
 ---------
-
-
-
-
-
