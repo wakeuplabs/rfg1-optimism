@@ -10,12 +10,12 @@ Learn more about **WakeUp Labs** [here](https://www.wakeuplabs.io/) and explore 
 
 ### Local Setup Guide
 
-### Prerequisites
+#### Prerequisites
 - Node.js installed on your machine
 - Git installed for cloning the repository
 - PostgreSQL installed and running or any database deployed
 
-### Steps to Run Locally
+#### Steps to Run Locally
   1. Clone the repository:
 ```bash
  git clone https://github.com/WakeUpLabs/RFG1-Optimism-Project.git
@@ -53,26 +53,22 @@ Learn more about **WakeUp Labs** [here](https://www.wakeuplabs.io/) and explore 
 ``` 
 
 
-
-
-
-
 ## Our architecture
 
-[Complete Here with project architecture diagram]
+- [ ] [Complete Here with project architecture diagram]
 
 ## Try It Out - Quick Demo
 
-[Input link to demo]
+- [ ] [Input link to demo]
 
 ## Try It Out - Dedicated Instance
 For your convenience, WakeUp Labs offers an easier solution by providing a deployed version and dedicated instance that is ready to use and seamlessly integrates with your services via REST APIs. To get started, simply log in to the [WakeUp Platform](https://platform.wakeuplabs.io/) and obtain your free apikey.
 
 ### Integration via WakeUp Platform REST APIs
----
-#### Sign Up & Get Free Api Key
 
-To use our services, you need to [sign up](https://platform.wakeuplabs.io/) and create a free API key with your email account. 
+#### 1. Sign Up & Get Free API Key
+
+To use the service, you need to [sign up](https://platform.wakeuplabs.io/) and create a free API key with your email account. 
 
 Once you have completed the registration process, go to the API Key section to view your API key information. 
 
@@ -81,45 +77,25 @@ Once you have completed the registration process, go to the API Key section to v
 Copy the generated API key and keep it safe, as it will be your credential for accessing our services 🔐
 
 
-### API Documentation
+#### 2. Use the REST API
 
----
-
-You can explore the service's capabilities through the different endpoints you will find in the [API Docs](https://wakeuplabs.stoplight.io/docs/stoplight-platform/vj8jtm9fbdl0n-retrieve-wallet-balance-at-date)
-
-
-* **Healthcheck Endpoint:** Check the health status of the service.
-* **Retrieve Wallet Balance:** Retrieve the current balance of a wallet.
-* **Retrieve Wallet Balance at Block:** Get the wallet balance at a specific block in the past.
-* **Retrieve Wallet Balance at Date:** Fetch the wallet balance at a specific date in the past.
-* **Execute Contract Function:** Execute a contract ```public view``` function by input of ABI.
-* **Execute Known Contract Function:** Execute a function of a known contract, no ABI input needed.
-* **Get View Functions of Known Contracts:** List ```public view``` functions of known contracts.
+You can explore the service's capabilities in the [WakeUp Platform API Docs](https://wakeuplabs.stoplight.io/docs/stoplight-platform/19iod9xapzajp-rfg-1-optimism-grants-council-wake-up-labs)
 
 
 
+Follow the instructions to use the REST API as you please.
+These are some API endpoints you will find and be able to use to try RFG1 implementation:
 
-
-
-
-
-
-
-
+* [Healthcheck Endpoint:](https://wakeuplabs.stoplight.io/docs/stoplight-platform/jbhm9uyfok2dt-healthcheck-endpoint) Check the health status of the service.
+* [Retrieve Wallet Balance:]() Retrieve the current balance of a wallet.
+* [Retrieve Wallet Balance at Block:](https://wakeuplabs.stoplight.io/docs/stoplight-platform/kqng1cecb32qx-retrieve-wallet-balance-at-block) Get the wallet balance at a specific block in the past.
+* [Retrieve Wallet Balance at Date](https://wakeuplabs.stoplight.io/docs/stoplight-platform/vj8jtm9fbdl0n-retrieve-wallet-balance-at-date): Fetch the wallet balance at a specific date in the past.
+* [Execute Contract Function:](https://wakeuplabs.stoplight.io/docs/stoplight-platform/ugoyma40tq7jm-execute-contract-function) Execute a contract ```public view``` function to get historical data, by input of ABI.
+* [Execute Known Contract Function:](https://wakeuplabs.stoplight.io/docs/stoplight-platform/by55d5fnj48cl-execute-known-contract-function) Execute a ```public view``` function of a known contract to get historical data, no ABI input needed.
+* [Get View Functions of Known Contracts:](https://wakeuplabs.stoplight.io/docs/stoplight-platform/1kjq0rkc09qt7-get-a-functions-known-abi) List ```public view``` functions of known contracts.
 
 
 
 ------
-********[Add TODO for Popular OP Contracts List]********
-------
-[This seems to apply only to the platform dedicated instance] --> 
-
-[Our service is purpose-built for effortless integration, streamlined maintenance, and adaptable extensibility with external services. Leveraging AWS infrastructure, we've deployed these services to create a scalable and high-performing solution.
-
-![image.png](./src/assets/rfg1-architecture.png)
-
-As illustrated in the previous image, we have a dedicated service interfacing with the database. Its main goal is to load a roster of well-known contracts. This approach offers flexibility not only for the current solution but also for future implementations, supporting a custom and different sets of contracts that may pique interest.]
-
-
-
----------
+### ToDo
+- [ ] Popular smart contracts feature
