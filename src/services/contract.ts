@@ -19,4 +19,13 @@ const getContract = async (contractAddress: string) => {
   });
 };
 
-export default { createContract, getContract };
+const getMostPopularContracts = async ({ blockchain }: { blockchain: Chain }) => {
+  return await prisma.contract.findMany({
+    where: {
+      isMostPopular: true,
+      blockchain
+    },
+  });
+};
+
+export default { createContract, getContract, getMostPopularContracts };
