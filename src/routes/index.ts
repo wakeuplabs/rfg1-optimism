@@ -22,4 +22,7 @@ router.put("/:address/query", contractController.queryContract);
 router.put("/:address/queryKnownABI", contractController.queryKnownABI);
 router.get("/:address/functionsKnownABI", contractController.getFunctionsKnownABI);
 
+// === Most Popular Contract ===
+router.get("/mostPopular", contractController.getMostPopular);
+
 export = router;
