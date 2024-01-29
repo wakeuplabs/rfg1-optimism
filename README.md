@@ -58,8 +58,14 @@ Learn more about **WakeUp Labs** [here](https://www.wakeuplabs.io/) and explore 
 - [ ] [Complete Here with project architecture diagram]
 
 ## Try It Out - Quick Demo
+Sometimes, examples speak louder than words.
 
-- [ ] [Input link to demo]
+We've also coded the first implementation of these APIs.
+The main idea behind the integration is to provide a user-friendly UI where users can define a specific Address or ENS and determine the amount of $ETH it holds on a specific date on the Optimism Blockchain.
+
+<img src="https://github.com/wakeuplabs/rfg1-optimism/assets/103151167/d8d6adc1-e382-4d51-91ff-760d3098a76e" width="50%" alt="image">
+
+* Demo: https://rfg1-demo.wakeuplabs.link/
 
 ## Try It Out - Dedicated Instance
 For your convenience, WakeUp Labs offers an easier solution by providing a deployed version and dedicated instance that is ready to use and seamlessly integrates with your services via REST APIs. To get started, simply log in to the [WakeUp Platform](https://platform.wakeuplabs.io/) and obtain your free apikey.
