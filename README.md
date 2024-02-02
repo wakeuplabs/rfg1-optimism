@@ -55,13 +55,32 @@ Learn more about **WakeUp Labs** [here](https://www.wakeuplabs.io/) and explore 
 
 ## Our architecture
 
-- [ ] [Complete Here with project architecture diagram]
+Our service is designed for easy integration, streamlined maintenance, and adaptable extensibility with external services.
+
+![image.png](./src/assets/archi-rfg1-simple.png)
+
+This RESTful API seamlessly interacts with the OP blockchain, persisting invoked functions in a dedicated database. Subsequently, users can conveniently bypass providing ABI information on following interactions.
+
+Moreover, an additional [component](https://github.com/wakeuplabs/rfg1-internal) empowers project owners to populate the database with smart contracts they deem pertinent.
+
+---
+
+To grasp the full spectrum of possibilities, delve into our sequence diagrams:
+
+This diagram shows how to leverage pre-loaded contracts. In that way, the user could check which are those contracts considered most popular and avoid the need to manually load the ABI information.
+
+![image.png](./src/assets/rfg1-sequence-diagram.png)
+
+Nevertheless, users always have the option to inspect any contract using a generic endpoint by passing the necessary parameters.
+
+![image.png](./src/assets/sequence-diagram-simple.png)
+
 
 ## Try It Out - Quick Demo
 Sometimes, examples speak louder than words.
 
 We've also coded the first implementation of these APIs.
-The main idea behind the integration is to provide a user-friendly UI where users can define a specific Address or ENS and determine the amount of $ETH it holds on a specific date on the Optimism Blockchain.
+The main idea behind the integration is to provide a user-friendly UI where users can define a specific Address or ENS and determine the amount of OP tokens it holds on a specific date on the Optimism Blockchain.
 
 <img src="https://github.com/wakeuplabs/rfg1-optimism/assets/103151167/d8d6adc1-e382-4d51-91ff-760d3098a76e" width="50%" alt="image">
 
@@ -99,9 +118,4 @@ These are some API endpoints you will find and be able to use to try RFG1 implem
 * [Execute Contract Function:](https://wakeuplabs.stoplight.io/docs/stoplight-platform/ugoyma40tq7jm-execute-contract-function) Execute a contract ```public view``` function to get historical data, by input of ABI.
 * [Execute Known Contract Function:](https://wakeuplabs.stoplight.io/docs/stoplight-platform/by55d5fnj48cl-execute-known-contract-function) Execute a ```public view``` function of a known contract to get historical data, no ABI input needed.
 * [Get View Functions of Known Contracts:](https://wakeuplabs.stoplight.io/docs/stoplight-platform/1kjq0rkc09qt7-get-a-functions-known-abi) List ```public view``` functions of known contracts.
-
-
-
-------
-### ToDo
-- [ ] Popular smart contracts feature
+* [Get most popular smart contracts:](https://wakeuplabs.stoplight.io/docs/stoplight-platform/1kjq0rkc09qt7-get-most-popular-smart-contracts) List ```contract addresses``` of the most popular contracts loaded previously.
