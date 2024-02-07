@@ -82,7 +82,7 @@ Sometimes, examples speak louder than words.
 We've also coded the first implementation of these APIs.
 The main idea behind the integration is to provide a user-friendly UI where users can define a specific Address or ENS and determine the amount of OP tokens it holds on a specific date on the Optimism Blockchain.
 
-<img src="https://github.com/wakeuplabs/rfg1-optimism/assets/103151167/d8d6adc1-e382-4d51-91ff-760d3098a76e" width="50%" alt="image">
+![Demo](/src/assets/demo.png)
 
 * Demo: https://rfg1-demo.wakeuplabs.link/
 
