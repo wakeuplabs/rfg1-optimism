@@ -61,7 +61,7 @@ Our service is designed for easy integration, streamlined maintenance, and adapt
 
 This RESTful API seamlessly interacts with the OP blockchain, persisting invoked functions in a dedicated database. Subsequently, users can conveniently bypass providing ABI information on following interactions.
 
-Moreover, an additional [component](https://github.com/wakeuplabs/rfg1-internal) empowers project owners to populate the database with smart contracts they deem pertinent.
+Moreover, an additional [component](https://github.com/wakeuplabs/rfg1-popular-contracts-loader) empowers project owners to populate the database with smart contracts they deem pertinent.
 
 ---
 
@@ -82,9 +82,9 @@ Sometimes, examples speak louder than words.
 We've also coded the first implementation of these APIs.
 The main idea behind the integration is to provide a user-friendly UI where users can define a specific Address or ENS and determine the amount of OP tokens it holds on a specific date on the Optimism Blockchain.
 
-![Demo](/src/assets/demo.png)
+Try it out here: https://rfg1-demo.wakeuplabs.link/
 
-* Demo: https://rfg1-demo.wakeuplabs.link/
+![Demo](/src/assets/demo.png)
 
 ## Try It Out - Dedicated Instance
 For your convenience, WakeUp Labs offers an easier solution by providing a deployed version and dedicated instance that is ready to use and seamlessly integrates with your services via REST APIs. To get started, simply log in to the [WakeUp Platform](https://platform.wakeuplabs.io/) and obtain your free apikey.
@@ -112,10 +112,10 @@ Follow the instructions to use the REST API as you please.
 These are some API endpoints you will find and be able to use to try RFG1 implementation:
 
 * [Healthcheck Endpoint:](https://wakeuplabs.stoplight.io/docs/stoplight-platform/jbhm9uyfok2dt-healthcheck-endpoint) Check the health status of the service.
-* [Retrieve Wallet Balance:]() Retrieve the current balance of a wallet.
+* [Retrieve Wallet Balance:](https://wakeuplabs.stoplight.io/docs/stoplight-platform/zst7kbmqxuxgp-retrieve-wallet-balance) Retrieve the current balance of a wallet.
 * [Retrieve Wallet Balance at Block:](https://wakeuplabs.stoplight.io/docs/stoplight-platform/kqng1cecb32qx-retrieve-wallet-balance-at-block) Get the wallet balance at a specific block in the past.
 * [Retrieve Wallet Balance at Date](https://wakeuplabs.stoplight.io/docs/stoplight-platform/vj8jtm9fbdl0n-retrieve-wallet-balance-at-date): Fetch the wallet balance at a specific date in the past.
 * [Execute Contract Function:](https://wakeuplabs.stoplight.io/docs/stoplight-platform/ugoyma40tq7jm-execute-contract-function) Execute a contract ```public view``` function to get historical data, by input of ABI.
 * [Execute Known Contract Function:](https://wakeuplabs.stoplight.io/docs/stoplight-platform/by55d5fnj48cl-execute-known-contract-function) Execute a ```public view``` function of a known contract to get historical data, no ABI input needed.
-* [Get View Functions of Known Contracts:](https://wakeuplabs.stoplight.io/docs/stoplight-platform/1kjq0rkc09qt7-get-a-functions-known-abi) List ```public view``` functions of known contracts.
+* [Get View Functions of Known Contracts:](https://wakeuplabs.stoplight.io/docs/stoplight-platform/dctukth2fct7k-get-a-functions-known-abi) List ```public view``` functions of known contracts.
 * [Get most popular smart contracts:](https://wakeuplabs.stoplight.io/docs/stoplight-platform/1kjq0rkc09qt7-get-most-popular-smart-contracts) List ```contract addresses``` of the most popular contracts loaded previously.
