@@ -1,10 +1,15 @@
-# RFG1 - Optimism Grants Council - WakeUp Labs
+# ⏰ RFG1 - Optimism Grants Council - WakeUp Labs
 
-Welcome to WakeUp Labs' implementation of RFG1 from the Optimism Grants Council! Our service allows you to query the blockchain for specific past moments. Here's how you can get started:
+Welcome to [WakeUp Labs](https://www.wakeuplabs.io/) implementation of the Optimism **Request For Grants #1** [RFG1](https://app.charmverse.io/op-grants/page-8928491436774362) from the Optimism Grants Council!
+
+The service allows anyone to query the blockchain for specific past moments. 
+
 
 ## Introduction
 
-Learn more about **WakeUp Labs** [here](https://www.wakeuplabs.io/) and explore our implementation of the Optimism **Request For Grants #1** [RFG1](https://app.charmverse.io/op-grants/page-8928491436774362) from the Optimism Grants Council. Our service is fully open-source with an MIT license.
+This is a service that will be able to query the blockchain for **specific moments in the past** ⏰. Specifically, the queries will be enabled for **any public view function** of any smart contract deployed on the Optimism blockchain from its first block until the current moment. It could be extended to any EVM blockchain.
+
+The implementation is fully open source with MIT license.
 
 ## How to run
 
