@@ -2,6 +2,8 @@
 
 Welcome to [WakeUp Labs](https://www.wakeuplabs.io/) implementation of the Optimism **Request For Grants #1** [RFG1](https://app.charmverse.io/op-grants/page-8928491436774362) from the Optimism Grants Council!
 
+You can take a look at the final Delivery and Feedback Thread in [our post at the Optimism Governance Forum](https://gov.optimism.io/t/wakeup-labs-rfg-1-update-and-feedback-thread/7842).
+
 The service allows anyone to query the blockchain for specific past moments. 
 
 
